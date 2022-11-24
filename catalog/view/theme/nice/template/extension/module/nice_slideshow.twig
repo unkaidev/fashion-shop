@@ -1,0 +1,34 @@
+<div class="nice-slideshow {% if with_banners %}nice-slideshow-with-banners{% endif %} swiper-viewport ">
+  <div id="nice-slideshow" class="swiper-container">
+    <div class="swiper-wrapper"> {% for slideshow in slideshows %}
+      <div class="swiper-slide text-center">{% if slideshow.link %}<a href="{{ slideshow.link }}"><img src="{{ slideshow.image }}" alt="{{ slideshow.title }}" class="img-responsive" /></a>{% else %}<img src="{{ slideshow.image }}" alt="{{ slideshow.title }}" class="img-responsive" />{% endif %}</div>
+      {% endfor %} </div>
+  </div>
+  <div class="swiper-pagination nice-slideshow-pagination"></div>
+  <div class="swiper-pager">
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+</div>
+<script type="text/javascript">
+$('#nice-slideshow').swiper({
+	mode: 'horizontal',
+	slidesPerView: 1,
+	pagination: '.nice-slideshow-pagination',
+	paginationClickable: true,
+	nextButton: '.nice-slideshow .swiper-button-next',
+  prevButton: '.nice-slideshow .swiper-button-prev',
+  spaceBetween: 30,
+	autoplay: 2500,
+  autoplayDisableOnInteraction: true,
+	loop: true
+});
+</script>
+{% if with_banners %}
+<div>
+{% for banner in banners %}
+<a href="{{ banner.link }}" class="banner-near-slideshow"><img src="{{ banner.image }}" class="img-responsive" /></a>
+{% endfor %}
+</div>
+<br class="clearfix" />
+{% endif %}

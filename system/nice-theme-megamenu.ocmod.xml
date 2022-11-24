@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Nice MegaMenu</name>
+  <code>Nice_MegaMenu</code>
+  <version>v1.2 (for Opencart 3.x)</version>
+  <author>&lt;a href=&quot;https://sergetkach.com&quot; &gt;Serge Tkach&lt;/a&gt;</author>
+  <link>https://sergetkach.com/</link>
+  
+  <!-- 
+    ADMIN
+  -->
+  <file path="admin/controller/catalog/category.php">
+    <operation>
+			<search index="1,2"><![CDATA[
+				$this->load->language('catalog/category');
+			]]></search>
+			<add position="after"><![CDATA[		
+		$this->load->language('extension/module/nice_megamenu_category'); // Nice MegaMenu
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				$this->load->model('tool/image');
+			]]></search>
+			<add position="after"><![CDATA[		// Nice MegaMenu . Begin
+		if (isset($this->request->post['nmm_image'])) {
+			$data['nmm_image'] = $this->request->post['nmm_image'];
+		} elseif (!empty($category_info)) {
+			$data['nmm_image'] = $category_info['nmm_image'];
+		} else {
+			$data['nmm_image'] = '';
+		}
+		// Nice MegaMenu . End
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
+			]]></search>
+			<add position="before"><![CDATA[		// Nice MegaMenu . Begin
+		if (isset($this->request->post['nmm_image']) && is_file(DIR_IMAGE . $this->request->post['nmm_image'])) {
+			$data['nmm_thumb'] = $this->model_tool_image->resize($this->request->post['nmm_image'], 100, 100);
+		} elseif (!empty($category_info) && is_file(DIR_IMAGE . $category_info['nmm_image'])) {
+			$data['nmm_thumb'] = $this->model_tool_image->resize($category_info['nmm_image'], 100, 100);
+		} else {
+			$data['nmm_thumb'] = $this->model_tool_image->resize('no_image.png', 100, 100);
+		}
+		// Nice MegaMenu . End
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				if (isset($this->request->post['status'])) {
+			]]></search>
+			<add position="before"><![CDATA[		// Nice MegaMenu . Begin
+		if (isset($this->request->post['nmm_promo_status'])) {
+			$data['nmm_promo_status'] = $this->request->post['nmm_promo_status'];
+		} elseif (!empty($category_info)) {
+			$data['nmm_promo_status'] = $category_info['nmm_promo_status'];
+		} else {
+			$data['nmm_promo_status'] = true;
+		}
+		// Nice MegaMenu . End
+]]></add>
+		</operation>
+    <!-- cache clear -->
+    <operation>
+			<search><![CDATA[
+				$this->model_catalog_category->addCategory($this->request->post);
+			]]></search>
+			<add position="after"><![CDATA[			
+			$this->cache->delete('nice_megamenu'); // Nice MegaMenu]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+			]]></search>
+			<add position="after"><![CDATA[			$this->cache->delete('nice_megamenu'); // Nice MegaMenu
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				if (isset($this->request->post['selected']) && $this->validateDelete()) {
+			]]></search>
+			<add position="after"><![CDATA[			$this->cache->delete('nice_megamenu'); // Nice MegaMenu
+]]></add>
+		</operation>
+  </file>
+  
+  <file path="admin/model/catalog/category.php">
+    <operation>
+			<search><![CDATA[
+				if (isset($data['image'])) {
+			]]></search>
+			<add position="before"><![CDATA[		// Nice MegaMenu . Begin
+		if (isset($data['nmm_image'])) {
+			$this->db->query("UPDATE " . DB_PREFIX . "category SET nmm_image = '" . $this->db->escape($data['nmm_image']) . "' WHERE category_id = '" . (int)$category_id . "'");
+		}
+		// Nice MegaMenu . End	
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				status = '" . (int)$data['status'] . "',
+			]]></search>
+			<add position="replace"><![CDATA[status = '" . (int)$data['status'] . "', nmm_promo_status = '" . (int)$data['nmm_promo_status'] . "',]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				meta_keyword = '" . $this->db->escape($value['meta_keyword']) . "'
+			]]></search>
+			<add position="replace"><![CDATA[meta_keyword = '" . $this->db->escape($value['meta_keyword']) . "', nmm_alt = '" . $this->db->escape($value['nmm_alt']) . "', nmm_title = '" . $this->db->escape($value['nmm_title']) . "', nmm_text = '" . $this->db->escape($value['nmm_text']) . "', nmm_link = '" . $this->db->escape($value['nmm_link']) . "', nmm_anchor = '" . $this->db->escape($value['nmm_anchor']) . "']]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				'description'      => $result['description']
+			]]></search>
+			<add position="replace"><![CDATA['description'      => $result['description'],
+				// Nice MegaMenu . Begin
+				'nmm_alt'          => $result['nmm_alt'],
+				'nmm_title'        => $result['nmm_title'],
+				'nmm_text'         => $result['nmm_text'],
+				'nmm_link'         => $result['nmm_link'],
+				'nmm_anchor'       => $result['nmm_anchor'],
+				// Nice MegaMenu . End]]></add>
+		</operation>
+  </file>
+  
+  <file path="admin/view/template/catalog/category_form.twig">
+    <operation>
+			<search><![CDATA[
+				<li><a href="#tab-seo" data-toggle="tab">{{ tab_seo }}</a></li>
+			]]></search>
+			<add position="before"><![CDATA[            <!-- Nice MegaMenu . Begin -->
+            <li><a href="#tab-nice-megamenu" data-toggle="tab">{{ tab_nice_megamenu }}</a></li>
+            <!-- Nice MegaMenu . End -->
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				<div class="tab-pane" id="tab-seo">
+			]]></search>
+			<add position="before"><![CDATA[            <!-- Nice MegaMenu . Begin -->
+            <div class="tab-pane" id="tab-nice-megamenu">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="nice-megamenu-promo-input-status">{{ entry_nmm_promo_status }}</label>
+                <div class="col-sm-10">
+                  <select name="nmm_promo_status" id="nice-megamenu-promo-input-status" class="form-control">
+                    {% if nmm_promo_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_image }}</label>
+                <div class="col-sm-10"><a href="" id="nice-megamenu-thumb" data-toggle="image" class="img-thumbnail"><img src="{{ nmm_thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                  <input type="hidden" name="nmm_image" value="{{ nmm_image }}" id="nice-megamenu-input-image" />
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="nice-megamenu-language">
+                {% for language in languages %}
+                <li><a href="#nice-megamenu-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+              {% for language in languages %}
+                <div class="tab-pane" id="nice-megamenu-language{{ language.language_id }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-nice-megamenu-alt{{ language.language_id }}">{{ entry_nmm_alt }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="category_description[{{ language.language_id }}][nmm_alt]" value="{{ category_description[language.language_id] ? category_description[language.language_id].nmm_alt }}" placeholder="{{ entry_nmm_alt }}" id="input-nice-megamenu-alt{{ language.language_id }}" class="form-control" />
+                      {% if error_nmm_alt[language.language_id] %}
+                      <div class="text-danger">{{ error_nmm_alt[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-nice-megamenu-title{{ language.language_id }}">{{ entry_nmm_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="category_description[{{ language.language_id }}][nmm_title]" value="{{ category_description[language.language_id] ? category_description[language.language_id].nmm_title }}" placeholder="{{ entry_nmm_title }}" id="input-nice-megamenu-title{{ language.language_id }}" class="form-control" />
+                      {% if error_nmm_title[language.language_id] %}
+                      <div class="text-danger">{{ error_nmm_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-nice-megamenu-text{{ language.language_id }}">{{ entry_nmm_text }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="category_description[{{ language.language_id }}][nmm_text]" placeholder="{{ entry_nmm_text }}" id="input-nice-megamenu-text{{ language.language_id }}" data-toggle="summernote" data-lang="{{ language.locale }}" class="form-control" />{{ category_description[language.language_id] ? category_description[language.language_id].nmm_text }}</textarea>
+                      {% if error_nmm_text[language.language_id] %}
+                      <div class="text-danger">{{ error_nmm_text[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-nice-megamenu-link{{ language.language_id }}">{{ entry_nmm_link }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="category_description[{{ language.language_id }}][nmm_link]" value="{{ category_description[language.language_id] ? category_description[language.language_id].nmm_link }}" placeholder="{{ entry_nmm_link }}" id="input-nice-megamenu-link{{ language.language_id }}" class="form-control" />
+                      {% if error_nmm_link[language.language_id] %}
+                      <div class="text-danger">{{ error_nmm_link[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-nice-megamenu-anchor{{ language.language_id }}">{{ entry_nmm_anchor }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="category_description[{{ language.language_id }}][nmm_anchor]" value="{{ category_description[language.language_id] ? category_description[language.language_id].nmm_anchor }}" placeholder="{{ entry_nmm_anchor }}" id="input-nice-megamenu-anchor{{ language.language_id }}" class="form-control" />
+                      {% if error_nmm_anchor[language.language_id] %}
+                      <div class="text-danger">{{ error_nmm_anchor[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <script type="text/javascript"><!--
+            $('#nice-megamenu-language a:first').tab('show');
+            //--></script>
+            <!-- Nice MegaMenu . End -->
+]]></add>
+		</operation>
+  </file>
+  
+  
+  
+  <!-- 
+    CATALOG
+  -->
+  <file path="catalog/controller/common/menu.php">
+		<operation>
+			<search><![CDATA[
+				$categories = $this->model_catalog_category->getCategories(0);
+			]]></search>
+			<add position="before"><![CDATA[		// Nice MegaMenu . Begin
+		$data['categories'] = $this->cache->get('nice_megamenu.' . (int)$this->config->get('config_language_id') . '.' . (int)$this->config->get('config_store_id'));
+		
+		if ($data['categories']) {
+			goto menu_view;
+		}
+		// Nice MegaMenu . End
+]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+				foreach ($children as $child) {
+			]]></search>
+			<add position="after"><![CDATA[					// Nice MegaMenu . Begin
+					
+					// Level 3
+					$grandchildren_data = array();
+					
+					$grandchildren = $this->model_catalog_category->getCategories($child['category_id']);
+					
+					foreach ($grandchildren as $grandchild) {
+						$filter_data = array(
+							'filter_category_id'  => $grandchild['category_id'],
+							'filter_sub_category' => true
+						);
+						
+						$grandchildren_data[] = array(
+							'name'  => $grandchild['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+							'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'] . '_' . $grandchild['category_id'])
+						);
+					}
+					// Nice MegaMenu . End
+]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+				'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+			]]></search>
+			<add position="after"><![CDATA[						'grandchildren' => $grandchildren_data, // Nice MegaMenu]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+				'href'     => $this->url->link('product/category', 'path=' . $category['category_id'])
+			]]></search>
+			<add position="replace"><![CDATA['href'     => $this->url->link('product/category', 'path=' . $category['category_id']),
+					'nmm_promo_status' => $category['nmm_promo_status'],
+					'nmm_image'=> ($this->request->server['HTTPS'] ? $this->config->get('config_ssl') : $this->config->get('config_url')) . 'image/' .  $category['nmm_image'],
+					'nmm_alt'  => $category['nmm_alt'],
+					'nmm_title'=> $category['nmm_title'],
+					'nmm_text' => html_entity_decode($category['nmm_text'], ENT_QUOTES, 'UTF-8'),
+					'nmm_link' => $category['nmm_link'],
+					'nmm_anchor' => $category['nmm_anchor'],]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+				return $this->load->view('common/menu', $data);
+			]]></search>
+			<add position="before"><![CDATA[		// Nice MegaMenu . Begin
+		$this->cache->set('nice_megamenu.' . (int)$this->config->get('config_language_id') . '.' . (int)$this->config->get('config_store_id'), $data['categories']);
+		
+		menu_view:			
+			
+		// Columns
+		$length = 15; // TODO... set in category settings?
+		
+		$categories_columned = [];
+		
+		foreach ($data['categories'] as $key => $category) {
+
+			foreach ($category as $index => $item) {
+				$categories_columned[$key][$index] = $item;
+				unset($categories_columned[$key]['children']);
+			}
+
+			$data['categories'][$key]['n'] = 0;
+			$column = 1;
+
+			foreach ($category['children'] as $key2 => $child) {
+				if ($data['categories'][$key]['n'] >= $length) {
+					$column++;
+
+					$data['categories'][$key]['n'] = 0;
+				}
+
+				$data['categories'][$key]['n'] ++;
+
+				$categories_columned[$key]['children'][$column][$key2] = $child;
+
+				foreach ($child['grandchildren'] as $key3 => $grandchild) {
+					$data['categories'][$key]['n'] ++;
+				}
+			}
+
+			$categories_columned[$key]['nice_menu_category_columns'] = $column;
+		}
+		
+		$data['categories_columned'] = $categories_columned;
+		// Nice MegaMenu . End
+]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[return $this->load->view('common/menu', $data);]]></search>
+			<add position="replace"><![CDATA[//return $this->load->view('common/menu', $data);
+		return $this->load->view('common/nice_megamenu', $data); // Nice MegaMenu]]></add>
+		</operation>
+	</file>
+</modification>

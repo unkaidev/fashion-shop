@@ -1,0 +1,1025 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-theme" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-nice"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ text_heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error.warning is defined %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error.warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if success is defined %}
+      <div class="alert alert-success alert-dismissible"><i class="fa fa-check"></i> {{ success }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-nice">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-theme" class="form-horizontal">
+          <fieldset>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <select name="theme_nice_status" id="input-status" class="form-control">
+                  {% if theme_nice_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </fieldset>
+          <hr>
+          <div class="row">
+            <div class="col-lg-2 col-md-3" >
+              <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#tab-basic-settings" data-toggle="pill">{{ tab_basic_settings }}</a></li>
+                <li><a href="#tab-colors" data-toggle="pill">{{ tab_colors }}</a></li>
+                <li><a href="#tab-menu-top" data-toggle="pill">{{ tab_menu_top }}</a></li>
+                <li><a href="#tab-page-home" data-toggle="pill">{{ tab_page_home }}</a></li>
+                <li><a href="#tab-page-product" data-toggle="pill">{{ tab_page_product }}</a></li>
+                <li><a href="#tab-product-list" data-toggle="pill">{{ tab_product_list }}</a></li>
+{#                <li><a href="#tab-footer" data-toggle="pill">{{ tab_footer }}</a></li>#}
+                <li><a href="#tab-about" data-toggle="pill">{{ tab_about }}</a></li>
+              </ul>
+            </div>
+            <hr class="hidden-lg hidden-md">
+            <div class="col-lg-10 col-md-9" style="border-left: 1px solid #eee;" >
+              <div class="tab-content">
+                
+                
+                <!-- Tab Basic Settings . Begin -->
+                <div class="tab-pane active" id="tab-basic-settings">
+                  <fieldset>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="input-directory"><span data-toggle="tooltip" title="{{ help_directory }}">{{ entry_directory }}</span></label>
+                      <div class="col-sm-10">
+                        <select name="theme_nice_directory" id="input-directory" class="form-control">
+                          {% for directory in directories %}
+                            {% if directory == theme_nice_directory %}
+                              <option value="{{ directory }}" selected="selected">{{ directory }}</option>
+                            {% else %}
+                              <option value="{{ directory }}">{{ directory }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <legend>{{ text_product }}</legend>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-catalog-limit"><span data-toggle="tooltip" title="{{ help_product_limit }}">{{ entry_product_limit }}</span></label>
+                      <div class="col-sm-10">
+                        <input type="text" name="theme_nice_product_limit" value="{{ theme_nice_product_limit }}" placeholder="{{ entry_product_limit }}" id="input-catalog-limit" class="form-control" />
+                        {% if error.product_limit is defined %}
+                          <div class="text-danger">{{ error.product_limit }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-description-lenght"><span data-toggle="tooltip" title="{{ help_product_description_length }}">{{ entry_product_description_length }}</span></label>
+                      <div class="col-sm-10">
+                        <input type="text" name="theme_nice_product_description_length" value="{{ theme_nice_product_description_length }}" placeholder="{{ entry_product_description_length }}" id="input-description-lenght" class="form-control" />
+                        {% if error.product_description_length is defined %}
+                          <div class="text-danger">{{ error.product_description_length }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>{{ text_image }}</legend>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-category-width">{{ entry_image_category }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_category_width" value="{{ theme_nice_image_category_width }}" placeholder="{{ entry_width }}" id="input-image-category-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_category_height" value="{{ theme_nice_image_category_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_category is defined %}
+                          <div class="text-danger">{{ error.image_category }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-manufacturer-width">{{ entry_image_manufacturer }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_manufacturer_width" value="{{ theme_nice_image_manufacturer_width }}" placeholder="{{ entry_width }}" id="input-image-manufacturer-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_manufacturer_height" value="{{ theme_nice_image_manufacturer_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_manufacturer is defined %}
+                          <div class="text-danger">{{ error.image_manufacturer }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-thumb-width">{{ entry_image_thumb }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_thumb_width" value="{{ theme_nice_image_thumb_width }}" placeholder="{{ entry_width }}" id="input-image-thumb-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_thumb_height" value="{{ theme_nice_image_thumb_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_thumb is defined %}
+                          <div class="text-danger">{{ error.image_thumb }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-popup-width">{{ entry_image_popup }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_popup_width" value="{{ theme_nice_image_popup_width }}" placeholder="{{ entry_width }}" id="input-image-popup-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_popup_height" value="{{ theme_nice_image_popup_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_popup is defined %}
+                          <div class="text-danger">{{ error.image_popup }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-product-width">{{ entry_image_product }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_product_width" value="{{ theme_nice_image_product_width }}" placeholder="{{ entry_width }}" id="input-image-product-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_product_height" value="{{ theme_nice_image_product_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_product is defined %}
+                          <div class="text-danger">{{ error.image_product }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-additional-width">{{ entry_image_additional }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_additional_width" value="{{ theme_nice_image_additional_width }}" placeholder="{{ entry_width }}" id="input-image-additional-width" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_additional_height" value="{{ theme_nice_image_additional_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_additional is defined %}
+                          <div class="text-danger">{{ error.image_additional }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-related">{{ entry_image_related }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_related_width" value="{{ theme_nice_image_related_width }}" placeholder="{{ entry_width }}" id="input-image-related" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_related_height" value="{{ theme_nice_image_related_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_related is defined %}
+                          <div class="text-danger">{{ error.image_related }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-compare">{{ entry_image_compare }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_compare_width" value="{{ theme_nice_image_compare_width }}" placeholder="{{ entry_width }}" id="input-image-compare" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_compare_height" value="{{ theme_nice_image_compare_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_compare is defined %}
+                          <div class="text-danger">{{ error.image_compare }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-wishlist">{{ entry_image_wishlist }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_wishlist_width" value="{{ theme_nice_image_wishlist_width }}" placeholder="{{ entry_width }}" id="input-image-wishlist" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_wishlist_height" value="{{ theme_nice_image_wishlist_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_wishlist is defined %}
+                          <div class="text-danger">{{ error.image_wishlist }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-cart">{{ entry_image_cart }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_cart_width" value="{{ theme_nice_image_cart_width }}" placeholder="{{ entry_width }}" id="input-image-cart" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_cart_height" value="{{ theme_nice_image_cart_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_cart is defined %}
+                          <div class="text-danger">{{ error.image_cart }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-image-location">{{ entry_image_location }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_location_width" value="{{ theme_nice_image_location_width }}" placeholder="{{ entry_width }}" id="input-image-location" class="form-control" />
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="text" name="theme_nice_image_location_height" value="{{ theme_nice_image_location_height }}" placeholder="{{ entry_height }}" class="form-control" />
+                          </div>
+                        </div>
+                        {% if error.image_location is defined %}
+                          <div class="text-danger">{{ error.image_location }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </fieldset>
+                </div> 
+                <!-- /Tab Basic Settings . End
+                ============================================================ -->
+                
+                
+                <!-- Tab Colors . Begin -->
+                <div class="tab-pane" id="tab-colors">
+                  <fieldset>
+                    <legend>{{ legend_colors_global }}</legend>
+                    <div class="form-group color-presets">
+                      <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_color_preset }}">{{ entry_color_preset }}</span></label>
+                      <div class="col-sm-10">
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #6667ab;" data-color="#6667ab"></span>
+                          <span class="color-presets--color -accent" style="background: #ea435d;" data-color="#ea435d"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #2ca5df;" data-color="#2ca5df"></span>
+                          <span class="color-presets--color -accent" style="background: #f85f77;" data-color="#f85f77"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #668aab;" data-color="#668aab"></span>
+                          <span class="color-presets--color -accent" style="background: #d1c485;" data-color="#d1c485"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #ab6466;" data-color="#ab6466"></span>
+                          <span class="color-presets--color -accent" style="background: #a2a2b4;" data-color="#a2a2b4"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #cd79a5;" data-color="#cd79a5"></span>
+                          <span class="color-presets--color -accent" style="background: #8485c0;" data-color="#8485c0"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #a34766;" data-color="#a34766"></span>
+                          <span class="color-presets--color -accent" style="background: #85a094;" data-color="#85a094"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #8766ab;" data-color="#8766ab"></span>
+                          <span class="color-presets--color -accent" style="background: #cd79a5;" data-color="#cd79a5"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #3d9869;" data-color="#3d9869"></span>
+                          <span class="color-presets--color -accent" style="background: #dd65a6;" data-color="#dd65a6"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #9a70a8;" data-color="#9a70a8"></span>
+                          <span class="color-presets--color -accent" style="background: #6ab990;" data-color="#6ab990"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #7c6486;" data-color="#7c6486"></span>
+                          <span class="color-presets--color -accent" style="background: #ebc078;" data-color="#ebc078"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #3d9869;" data-color="#3d9869"></span>
+                          <span class="color-presets--color -accent" style="background: #a6c756;" data-color="#a6c756"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #858597;" data-color="#858597"></span>
+                          <span class="color-presets--color -accent" style="background: #f48744;" data-color="#f48744"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #e6681b;" data-color="#e6681b"></span>
+                          <span class="color-presets--color -accent" style="background: #00a9ad;" data-color="#00a9ad"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #241c40;" data-color="#241c40"></span>
+                          <span class="color-presets--color -accent" style="background: #a2a2b4;" data-color="#a2a2b4"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #90af47;" data-color="#90af47"></span>
+                          <span class="color-presets--color -accent" style="background: #f48744;" data-color="#f48744"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #728f82;" data-color="#728f82"></span>
+                          <span class="color-presets--color -accent" style="background: #cdb97d;" data-color="#cdb97d"></span>
+                        </div>
+                        <div class="color-presets--item">
+                          <span class="color-presets--color -primary" style="background: #a19572;" data-color="#a19572"></span>
+                          <span class="color-presets--color -accent" style="background: #85a094;" data-color="#85a094"></span>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-color-primary"><span data-toggle="tooltip" title="{{ help_color_primary }}">{{ entry_color_primary }}</span></label>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__lighter_3" value="{{ theme_nice_color_primary__lighter_3 }}" placeholder="{{ entry_color_primary__lighter_3 }}" id="input-color-primary--lighter-3" class="form-control spectrum-2" />
+                        {% if error.color_primary__lighter_3 is defined %}
+                          <div class="text-danger">{{ error.color_primary__lighter_3 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__lighter_2" value="{{ theme_nice_color_primary__lighter_2 }}" placeholder="{{ entry_color_primary__lighter_2 }}" id="input-color-primary--lighter-2" class="form-control spectrum-2" />
+                        {% if error.color_primary__lighter_2 is defined %}
+                          <div class="text-danger">{{ error.color_primary__lighter_2 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__lighter_1" value="{{ theme_nice_color_primary__lighter_1 }}" placeholder="{{ entry_color_primary__lighter_1 }}" id="input-color-primary--lighter-1" class="form-control spectrum-2" />
+                        {% if error.color_primary__lighter_1 is defined %}
+                          <div class="text-danger">{{ error.color_primary__lighter_1 }}</div>
+                        {% endif %}
+                      </div>                    
+
+                      <div class="col-sm-2">
+                        <input type="text" name="theme_nice_color_primary" value="{{ theme_nice_color_primary }}" placeholder="{{ entry_color_primary }}" id="input-color-primary" class="form-control spectrum" />
+                        {% if error.color_primary is defined %}
+                          <div class="text-danger">{{ error.color_primary }}</div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__darker_1" value="{{ theme_nice_color_primary__darker_1 }}" placeholder="{{ entry_color_primary__darker_1 }}" id="input-color-primary--darker-1" class="form-control spectrum-2" />
+                        {% if error.color_primary__darker_1 is defined %}
+                          <div class="text-danger">{{ error.color_primary__darker_1 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__darker_2" value="{{ theme_nice_color_primary__darker_2 }}" placeholder="{{ entry_color_primary__darker_2 }}" id="input-color-primary--darker-2" class="form-control spectrum-2" />
+                        {% if error.color_primary__darker_2 is defined %}
+                          <div class="text-danger">{{ error.color_primary__darker_2 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_primary__darker_3" value="{{ theme_nice_color_primary__darker_3 }}" placeholder="{{ entry_color_primary__darker_3 }}" id="input-color-primary--darker-3" class="form-control spectrum-2" />
+                        {% if error.color_primary__darker_3 is defined %}
+                          <div class="text-danger">{{ error.color_primary__darker_3 }}</div>
+                        {% endif %}
+                      </div>                    
+                    </div>
+
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-color-accent"><span data-toggle="tooltip" title="{{ help_color_accent }}">{{ entry_color_accent }}</span></label>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__lighter_3" value="{{ theme_nice_color_accent__lighter_3 }}" placeholder="{{ entry_color_accent__lighter_3 }}" id="input-color-accent--lighter-3" class="form-control spectrum-2" />
+                        {% if error.color_accent__lighter_3 is defined %}
+                          <div class="text-danger">{{ error.color_accent__lighter_3 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__lighter_2" value="{{ theme_nice_color_accent__lighter_2 }}" placeholder="{{ entry_color_accent__lighter_2 }}" id="input-color-accent--lighter-2" class="form-control spectrum-2" />
+                        {% if error.color_accent__lighter_2 is defined %}
+                          <div class="text-danger">{{ error.color_accent__lighter_2 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__lighter_1" value="{{ theme_nice_color_accent__lighter_1 }}" placeholder="{{ entry_color_accent__lighter_1 }}" id="input-color-accent--lighter-1" class="form-control spectrum-2" />
+                        {% if error.color_accent__lighter_1 is defined %}
+                          <div class="text-danger">{{ error.color_accent__lighter_1 }}</div>
+                        {% endif %}
+                      </div>                    
+
+                      <div class="col-sm-2">
+                        <input type="text" name="theme_nice_color_accent" value="{{ theme_nice_color_accent }}" placeholder="{{ entry_color_accent }}" id="input-color-accent" class="form-control spectrum" />
+                        {% if error.color_accent is defined %}
+                          <div class="text-danger">{{ error.color_accent }}</div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__darker_1" value="{{ theme_nice_color_accent__darker_1 }}" placeholder="{{ entry_color_accent__darker_1 }}" id="input-color-accent--darker-1" class="form-control spectrum-2" />
+                        {% if error.color_accent__darker_1 is defined %}
+                          <div class="text-danger">{{ error.color_accent__darker_1 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__darker_2" value="{{ theme_nice_color_accent__darker_2 }}" placeholder="{{ entry_color_accent__darker_2 }}" id="input-color-accent--darker-2" class="form-control spectrum-2" />
+                        {% if error.color_accent__darker_2 is defined %}
+                          <div class="text-danger">{{ error.color_accent__darker_2 }}</div>
+                        {% endif %}
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" name="theme_nice_color_accent__darker_3" value="{{ theme_nice_color_accent__darker_3 }}" placeholder="{{ entry_color_accent__darker_3 }}" id="input-color-accent--darker-3" class="form-control spectrum-2" />
+                        {% if error.color_accent__darker_3 is defined %}
+                          <div class="text-danger">{{ error.color_accent__darker_3 }}</div>
+                        {% endif %}
+                      </div>                    
+                    </div>
+                  </fieldset>
+                  <br>
+                  <br>
+                  <fieldset>
+                    <legend>{{ legend_colors_of_element }}</legend>
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label" for="input-color-footer-bg">{{ entry_color_footer_bg }}</label>
+                      <div class="col-sm-2">
+                        <input type="text" name="theme_nice_color_footer_bg" value="{{ theme_nice_color_footer_bg }}" placeholder="{{ entry_color_footer_bg }}" id="input-color-footer-bg" class="form-control spectrum" />
+                        {% if error.color_footer_bg is defined %}
+                          <div class="text-danger">{{ error.color_footer_bg }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  
+                </div>
+                <!-- /Tab Colors . End
+                ============================================================ -->
+                
+                
+                <!-- Tab Menu Top . Begin -->
+                <div class="tab-pane" id="tab-menu-top">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_menu_top_status }}</label>
+                    <div class="col-sm-10">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default {% if not theme_nice_menu_top_status %} active {% endif %}">
+                          <input type="radio" name="theme_nice_menu_top_status" value="0" {% if not theme_nice_menu_top_status %} checked {% endif %}>
+                          <span >{{ text_disabled }}</span>
+                        </label>
+                        <label class="btn btn-default {% if theme_nice_menu_top_status %} active {% endif %}">
+                          <input type="radio" name="theme_nice_menu_top_status" value="1" {% if theme_nice_menu_top_status %} checked {% endif %}>
+                          <span >{{ text_enabled }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ text_menu_top_items }}</label>
+                    <div class="col-sm-10">
+                      <table id="main-menu-items" class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <td class="nowrap">{{ text_title }}</td>
+                            <td class="nowrap">{{ text_link }}</td>
+                            <td class="nowrap">{{ text_sort_order }}</td>
+                            <td class="w-1"></td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% set item_row_main = 0 %}
+                          {% for theme_nice_menu_top_item in theme_nice_menu_top_items %}
+                            <tr id="item-row-main{{ item_row_main }}">
+                              <td class="text-left">
+                                {% for language in languages %}
+                                  <div class="input-group input-group-sm pull-left">
+                                    <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                    <input class="form-control" type="text" name="theme_nice_menu_top_item[{{ item_row_main }}][title][{{ language.language_id }}]" value="{{ theme_nice_menu_top_item.title[language.language_id] }}" />
+                                  </div>
+                                {% endfor %}
+                              </td>
+                              <td class="text-left">
+                                {% for language in languages %}
+                                  <div class="input-group input-group-sm pull-left">
+                                    <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                    <input class="form-control" type="text" name="theme_nice_menu_top_item[{{ item_row_main }}][link][{{ language.language_id }}]" value="{{ theme_nice_menu_top_item.link[language.language_id] }}" />
+                                  </div>
+                                {% endfor %}
+                              </td>
+                              <td class="text-left">
+                                <input  class="form-control" type="text" name="theme_nice_menu_top_item[{{ item_row_main }}][sort_order]" value="{{ theme_nice_menu_top_item.sort_order }}" />
+                              </td>
+                              <td class="text-right">
+                                <a class="btn btn-danger" onclick="$('#item-row-main{{ item_row_main }}').remove();" data-toggle="tooltip" title="Удалить"><i class="fa fa-trash-o"></i></a>
+                              </td>
+                            </tr>
+                            {% set item_row_main = item_row_main + 1 %}
+                          {% endfor %}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="3"></td>
+                            <td class="text-right"><a class="btn btn-default" onclick="addItemMain();" data-toggle="tooltip" title="Добавить"><i class="fa fa-plus"></i></a></td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                      <script>
+                        var item_row_main = {{ item_row_main }};
+                                function addItemMain() {
+                                  html = '<tr id="item-row-main' + item_row_main + '">';
+                                  html += '<td class="text-left">';
+                        {% for language in languages %}
+                                    html += '<div class="input-group input-group-sm pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+                                    html += '<input class="form-control" type="text" name="theme_nice_menu_top_item[' + item_row_main + '][title][{{ language.language_id }}]" value="" />';
+                                    html += '</div>';
+                        {% endfor %}
+                                    html += '</td>';
+                                    html += '<td class="text-left">';
+                        {% for language in languages %}
+                                    html += '<div class="input-group input-group-sm pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+                                    html += '<input class="form-control"  type="text" name="theme_nice_menu_top_item[' + item_row_main + '][link][{{ language.language_id }}]" value="" />';
+                                    html += '</div>';
+                        {% endfor %}
+                                    html += '</td>';
+                                    html += '<td class="text-left"><input class="form-control" type="text" name="theme_nice_menu_top_item[' + item_row_main + '][sort_order]" size="1" value="0" /></td>';
+                                    html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row-main' + item_row_main + '\').remove();" data-toggle="tooltip" title="Удалить"><i class="fa fa-trash-o"></i></a></td>';
+                                    html += '</tr>';
+                                    $('#main-menu-items tbody').append(html);
+                                    ;
+                                    item_row_main++;
+                                  }
+                      </script> 
+                    </div>
+                  </div>
+                </div>
+                <!-- /Tab Menu Top . End
+                ============================================================ -->
+                
+                <!-- Tab Page Home . Begin -->
+                <div class="tab-pane" id="tab-page-home">
+                  <fieldset>
+                    <legend>{{ legend_home_slideshow }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_home_slideshow_status }}</label>
+                      <div class="col-sm-10">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-default {% if not theme_nice_home_slideshow_status %} active {% endif %}">
+                            <input type="radio" name="theme_nice_home_slideshow_status" value="0" {% if not theme_nice_home_slideshow_status %} checked {% endif %}>
+                            <span >{{ text_disabled }}</span>
+                          </label>
+                          <label class="btn btn-default {% if theme_nice_home_slideshow_status %} active {% endif %}">
+                            <input type="radio" name="theme_nice_home_slideshow_status" value="1" {% if theme_nice_home_slideshow_status %} checked {% endif %}>
+                            <span >{{ text_enabled }}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ text_home_slideshow }}</label>
+                      <div class="col-sm-10">
+                        <div class="inline-block">
+                          <select name="theme_nice_home_slideshow_id" class="form-control">
+                            <option value="0">{{ text_select }}</option>
+                            {% for slideshow in slideshows %}
+                              {% if slideshow.slideshow_id == theme_nice_home_slideshow_id %}
+                              <option value="{{ slideshow.slideshow_id }}" selected="selected">{{ slideshow.name }}</option>
+                              {% else %}
+                              <option value="{{ slideshow.slideshow_id }}">{{ slideshow.name }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          {% if error.home_slideshow_id is defined %}
+                          <div class="text-danger">{{ error.home_slideshow_id }}</div>
+                          {% endif %}
+                        </div>
+                        <i>{{ see_nice_slideshows }}</i>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="input-home-slideshow-width">{{ entry_home_slideshow_width }}</label>
+                      <div class="col-sm-4">
+                        <input type="text" name="theme_nice_home_slideshow_width" value="{{ theme_nice_home_slideshow_width }}" placeholder="{{ entry_width }}" id="input-home-slideshow-width" class="form-control" />
+                        {% if error.home_slideshow_width is defined %}
+                        <div class="text-danger">{{ error.home_slideshow_width }}</div>
+                        {% endif %}
+                      </div>
+                      <label class="col-sm-2 control-label" for="input-home-slideshow-height">{{ entry_home_slideshow_height }}</label>
+                      <div class="col-sm-4">
+                        <input type="text" name="theme_nice_home_slideshow_height" value="{{ theme_nice_home_slideshow_height }}" placeholder="{{ entry_height }}" id="input-home-slideshow-height" class="form-control" />
+                        {% if error.home_slideshow_height is defined %}
+                        <div class="text-danger">{{ error.home_slideshow_height }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>{{ legend_home_banners_near_slideshow }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_home_banners_near_slideshow_status }}</label>
+                      <div class="col-sm-10">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-default {% if not theme_nice_home_banner_near_slideshow_status %} active {% endif %}">
+                            <input type="radio" name="theme_nice_home_banner_near_slideshow_status" value="0" {% if not theme_nice_home_banner_near_slideshow_status %} checked {% endif %}>
+                            <span >{{ text_disabled }}</span>
+                          </label>
+                          <label class="btn btn-default {% if theme_nice_home_banner_near_slideshow_status %} active {% endif %}">
+                            <input type="radio" name="theme_nice_home_banner_near_slideshow_status" value="1" {% if theme_nice_home_banner_near_slideshow_status %} checked {% endif %}>
+                            <span >{{ text_enabled }}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <ul class="nav nav-tabs" id="home-banner-language">
+                      {% for language in languages %}
+                      <li><a href="#home-banner-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                      {% for language in languages %}
+                      <div class="tab-pane fade" id="home-banner-language-{{ language.language_id }}">
+                        <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <td class="text-left col-sm-2">{{ text_images }}</td>
+                                <td class="text-left col-sm-10">{{ text_links }}</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="text-left"><a href="" id="thumb-banners-near-slideshow-{{ language.language_id }}-1" data-toggle="image" class="img-thumbnail"><img src="{{ thumb_home_banners_1[language.language_id] }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a> <input type="hidden" name="theme_nice_home_banner_1[{{ language.language_id }}]" value="{{ theme_nice_home_banner_1[language.language_id] }}" id="input-home-banners-near-slideshow-{{ language.language_id }}-1"/></td>
+                                <td><input type="text" name="theme_nice_home_banner_1_link[{{ language.language_id }}]" value="{{ theme_nice_home_banner_1_link[language.language_id] }}" placeholder="{{ text_link }}" class="form-control" /></td>
+                              </tr>
+                              <tr>
+                                <td class="text-left"><a href="" id="thumb-banners-near-slideshow-{{ language.language_id }}-2" data-toggle="image" class="img-thumbnail"><img src="{{ thumb_home_banners_2[language.language_id] }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a> <input type="hidden" name="theme_nice_home_banner_2[{{ language.language_id }}]" value="{{ theme_nice_home_banner_2[language.language_id] }}" id="input-home-banners-near-slideshow-{{ language.language_id }}-2"/></td>
+                                <td><input type="text" name="theme_nice_home_banner_2_link[{{ language.language_id }}]" value="{{ theme_nice_home_banner_2_link[language.language_id] }}" placeholder="{{ text_link }}" class="form-control" /></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <script type="text/javascript">
+                    $('#home-banner-language a:first').tab('show');
+                    </script> 
+                        
+                  </fieldset>
+                </div>
+                <!-- /Tab Page Home . End
+                ============================================================ -->
+                
+                
+                <!-- Tab Page Product . Begin -->
+                <div class="tab-pane" id="tab-product-list">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_image_margins }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                        <label class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_image_margins" value="0" {% if not theme_nice_productlist_image_margins %} checked {% endif %}>
+                          {{ text_productlist_image_margins_yes }}
+                          <img src="view/image/nice/productlist_image_1.jpg" class="img-responsive">
+                        </label>
+                        <label  class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_image_margins" value="1" {% if theme_nice_productlist_image_margins %} checked {% endif %}>
+                          {{ text_productlist_image_margins_no }}
+                          <img src="view/image/nice/productlist_image_2.jpg" class="img-responsive">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_description }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                      <label class="radio-inline col-sm-4">
+                        <input type="radio" name="theme_nice_productlist_description" value="0" {% if not theme_nice_productlist_description %} checked {% endif %}>
+                        <span >{{ text_disabled }}</span>
+                        <img src="view/image/nice/productlist_description_disabled.jpg" class="img-responsive">
+                      </label>
+                      <label class="radio-inline col-sm-4">
+                        <input type="radio" name="theme_nice_productlist_description" value="1" {% if theme_nice_productlist_description %} checked {% endif %}>
+                        <span >{{ text_enabled }}</span>
+                        <img src="view/image/nice/productlist_description_enabled.jpg" class="img-responsive">
+                      </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="depended-from-productlist-description">
+                    <hr>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">{{ entry_productlist_description_on_mobile }}</label>
+                      <div class="col-sm-10">
+                        <div class="row">
+                        <label class="radio-inline col-sm-5">
+                          <input type="radio" name="theme_nice_productlist_description_on_mobile" value="0" {% if not theme_nice_productlist_description_on_mobile %} checked {% endif %}>
+                          <span >{{ text_disabled }}</span>
+                          <img src="view/image/nice/productlist_description_on_mobile_disabled.jpg" class="img-responsive">
+                        </label>
+                        <label class="radio-inline col-sm-5">
+                          <input type="radio" name="theme_nice_productlist_description_on_mobile" value="1" {% if theme_nice_productlist_description_on_mobile %} checked {% endif %}>
+                          <span >{{ text_enabled }}</span>
+                          <img src="view/image/nice/productlist_description_on_mobile_enabled.jpg" class="img-responsive">
+                        </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_name_font_weight }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                        <label class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_name_font_weight" value="regular" {% if 'regular' == theme_nice_productlist_name_font_weight %} checked {% endif %}> 
+                          <span >{{ text_regular }}</span>
+                          <img src="view/image/nice/productlist_name_font_weight_regular.jpg" class="img-responsive">
+                        </label>
+                        <label class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_name_font_weight" value="bold" {% if 'bold' == theme_nice_productlist_name_font_weight %} checked {% endif %}>
+                          <span >{{ text_bold }}</span>
+                          <img src="view/image/nice/productlist_name_font_weight_bold.jpg" class="img-responsive">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_price_font_weight }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                        <label class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_price_font_weight" value="regular" {% if 'regular' == theme_nice_productlist_price_font_weight %} checked {% endif %}> 
+                          <span >{{ text_regular }}</span>
+                          <img src="view/image/nice/productlist_price_font_weight_regular.jpg" class="img-responsive">
+                        </label>
+                        <label class="radio-inline col-sm-4">
+                          <input type="radio" name="theme_nice_productlist_price_font_weight" value="bold" {% if 'bold' == theme_nice_productlist_price_font_weight %} checked {% endif %}>
+                          <span >{{ text_bold }}</span>
+                          <img src="view/image/nice/productlist_price_font_weight_bold.jpg" class="img-responsive">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_grid_hover_effect }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                      <label class="radio-inline col-sm-5">
+                        <input type="radio" name="theme_nice_productlist_grid_hover_effect" value="0" {% if not theme_nice_productlist_grid_hover_effect %} checked {% endif %}>
+                        <span >{{ text_disabled }}</span>
+                        <img src="view/image/nice/productlist_grid_hover_effect_disabled.jpg" class="img-responsive">
+                      </label>
+                      <label class="radio-inline col-sm-5">
+                        <input type="radio" name="theme_nice_productlist_grid_hover_effect" value="1" {% if theme_nice_productlist_grid_hover_effect %} checked {% endif %}>
+                        <span >{{ text_enabled }}</span>
+                        <img src="view/image/nice/productlist_grid_hover_effect_enabled.jpg" class="img-responsive">
+                      </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_productlist_cols_on_mobile }}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                      <label class="radio-inline col-sm-5">
+                        <input type="radio" name="theme_nice_productlist_cols_on_mobile" value="1" {% if 1 == theme_nice_productlist_cols_on_mobile %} checked {% endif %}>
+                        <span >{{ text_1_col }}</span>
+                        <img src="view/image/nice/productlist_cols_on_mobile_1.jpg" class="img-responsive">
+                      </label>
+                      <label class="radio-inline col-sm-5">
+                        <input type="radio" name="theme_nice_productlist_cols_on_mobile" value="2" {% if 2 == theme_nice_productlist_cols_on_mobile %} checked {% endif %}>
+                        <span >{{ text_2_cols }}</span>
+                        <img src="view/image/nice/productlist_cols_on_mobile_2.jpg" class="img-responsive">
+                      </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <!-- /Tab Page Product . End
+                ============================================================ -->
+                
+                
+                <!-- Tab Product List . Begin -->
+                <div class="tab-pane" id="tab-page-product">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-page-product-shortdescription-lenght"><span data-toggle="tooltip" title="{{ help_page_product_shortdescritipon_length }}">{{ entry_page_product_shortdescritipon_length }}</span></label>
+                      <div class="col-sm-10">
+                        <input type="text" name="theme_nice_page_product_shortdescritipon_length" value="{{ theme_nice_page_product_shortdescritipon_length }}" placeholder="{{ entry_page_product_shortdescritipon_length }}" id="input-page-product-shortdescription-lenght" class="form-control" />
+                        {% if error.page_product_shortdescritipon_length is defined %}
+                          <div class="text-danger">{{ error.page_product_shortdescritipon_length }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  <hr>
+                </div>
+                <!-- /Tab Page Product . End
+                ============================================================ -->
+                
+                <!-- Tab Footer . Begin -->
+                {#<div class="tab-pane" id="tab-footer">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_footer_icons }}</label>
+                    <div class="col-sm-9">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default {% if not theme_nice_pay_icons_toggle %} active {% endif %}">
+                          <input type="radio" name="theme_nice_pay_icons_toggle" value="0" {% if not theme_nice_pay_icons_toggle %} checked {% endif %}>
+                          <span >{{ text_enabled }}</span>
+                        </label>
+                        <label class="btn btn-default {% if theme_nice_pay_icons_toggle %} active {% endif %}">
+                          <input type="radio" name="theme_nice_pay_icons_toggle" value="1" {% if theme_nice_pay_icons_toggle %} checked {% endif %}>
+                          <span >{{ text_disabled }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ text_banner }}</label>
+                    <div class="col-sm-9">
+                      <div class="inline-block">
+                        <select name="theme_nice_pay_icons_banner_id" class="form-control">
+                          <option value="-1">{{ text_select }}</option>
+                          {% for banner in banners %}
+                            {% if banner.banner_id == theme_nice_pay_icons_banner_id %}
+                              <option value="{{ banner.banner_id }}" selected="selected">{{ banner.name }}</option>
+                            {% else %}
+                              <option value="{{ banner.banner_id }}">{{ banner.name }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>#}
+                <!-- /Tab Footer . End
+                ============================================================ -->
+                
+                
+                <!-- Tab About . Begin -->
+                <div class="tab-pane" id="tab-about">
+                  <div>
+                    <h3>{{ about_title }}</h3>
+                    <br>
+                    <img class="img-responsive" style="width: 200px; float: left; margin-right: 16px;" src="view/image/nice/about/logo-7-e-nunito-sans.png" />
+                    {{ about_text }}
+                    <br class="clear">
+                  </div>
+                  <br>
+                  <br>
+                  <div>
+                    <h3>{{ about_open_source }}</h3>
+                    <br>
+                    <img class="img-responsive" style="width: 200px; float: left; margin-right: 16px;" src="view/image/nice/about/open-source.png" />
+                    {{ about_open_source_text }}
+                    <br class="clear">
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <div>
+                    <h3>{{ about_author_title }}</h3>
+                    <br>
+                    <img class="img-responsive" style="width: 200px; float: left; margin-right: 16px; border-radius: 50%;" src="view/image/nice/about/serge-tkach-200px.jpg" />
+                    {{ about_author_text }}
+                    <br class="clear">
+                  </div>
+                  <br>
+                                
+                </div>
+                <!-- /Tab About . End
+                ============================================================ -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('.spectrum').spectrum({
+  type: "component",
+  hideAfterPaletteSelect: true,
+  showInput: true,
+  showInitial: true,
+  allowEmpty: false
+});
+
+$('.spectrum-2').spectrum({
+  type: "component",
+  hideAfterPaletteSelect: true,
+  showPalette: false,
+  showInput: true,
+  showInitial: true,
+  allowEmpty: false
+});
+</script>
+
+<script>
+$('.color-presets--item').click(function() {
+  $('#input-color-primary').val($(this).children('.-primary').data('color'));
+  $('#input-color-primary').trigger('change');
+  $('#input-color-accent').val($(this).children('.-accent').data('color'));
+  $('#input-color-accent').trigger('change');
+});
+</script>
+
+<script>
+$('#input-color-primary').change(function() {
+  $.ajax({
+		url: 'index.php?route=extension/theme/nice/getColorTonesByAjax&color=' + encodeURIComponent($('#input-color-primary').val()) + '&user_token={{ user_token }}',
+    method: 'GET',
+		dataType: 'json',
+		success: function(json) {
+      if (undefined !== json['tones']) {
+        $('#input-color-primary--darker-1').val(json['tones']['darker-1']); $('#input-color-primary--darker-1').trigger('change');
+        $('#input-color-primary--darker-2').val(json['tones']['darker-2']); $('#input-color-primary--darker-2').trigger('change');
+        $('#input-color-primary--darker-3').val(json['tones']['darker-3']); $('#input-color-primary--darker-3').trigger('change');
+        $('#input-color-primary--lighter-1').val(json['tones']['lighter-1']); $('#input-color-primary--lighter-1').trigger('change');
+        $('#input-color-primary--lighter-2').val(json['tones']['lighter-2']); $('#input-color-primary--lighter-2').trigger('change');
+        $('#input-color-primary--lighter-3').val(json['tones']['lighter-3']); $('#input-color-primary--lighter-3').trigger('change');
+      }
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+  
+});
+$('#input-color-accent').change(function() {
+  
+  $.ajax({
+		url: 'index.php?route=extension/theme/nice/getColorTonesByAjax&color=' + encodeURIComponent($('#input-color-accent').val()) + '&user_token={{ user_token }}',
+    method: 'GET',
+		dataType: 'json',
+		success: function(json) {
+      if (undefined !== json['tones']) {
+        $('#input-color-accent--darker-1').val(json['tones']['darker-1']); $('#input-color-accent--darker-1').trigger('change');
+        $('#input-color-accent--darker-2').val(json['tones']['darker-2']); $('#input-color-accent--darker-2').trigger('change');
+        $('#input-color-accent--darker-3').val(json['tones']['darker-3']); $('#input-color-accent--darker-3').trigger('change');
+        $('#input-color-accent--lighter-1').val(json['tones']['lighter-1']); $('#input-color-accent--lighter-1').trigger('change');
+        $('#input-color-accent--lighter-2').val(json['tones']['lighter-2']); $('#input-color-accent--lighter-2').trigger('change');
+        $('#input-color-accent--lighter-3').val(json['tones']['lighter-3']); $('#input-color-accent--lighter-3').trigger('change');
+      }
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+  
+  
+});
+</script>
+                          
+<script>
+$(document).ready(function() {
+  if ($("input[name='theme_nice_productlist_description']:checked").val() == 1) {
+    $(".depended-from-productlist-description").show();
+  } else {
+    $(".depended-from-productlist-description").hide();
+  }
+  
+}); 
+  
+$("input[name='theme_nice_productlist_description']").on("change", function() {
+  if (1 == $(this).val()) {
+    $(".depended-from-productlist-description").slideDown();
+  } else {
+    $(".depended-from-productlist-description").slideUp();
+    $(".depended-from-productlist-description").find("input[value='0']").prop("checked", true);
+  }
+});
+</script>
+{{ footer }}
