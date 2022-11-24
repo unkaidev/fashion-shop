@@ -1,0 +1,22 @@
+<div id="search" class="search">
+  <select name="category_id" class="search--category-selector">
+    <option value="0">{{ nice_text_search_category }}</option>
+    {% for category in categories %}
+      <option value="{{ category.category_id }}" {% if (selected_category_id == category.category_id) %} {{ 'selected' }} {% endif %}>{{ category.name }}</option>
+    
+      {% if category.children %}
+      {% for child in category.children %}
+        <option value="{{ child.category_id }}" {% if (selected_category_id == child.category_id) %} {{ 'selected' }} {% endif %}> &nbsp;- {{ child.name }}</option>
+        {% if child.grandchildren %}
+          {% for grandchild in child.grandchildren %}
+            <option value="{{ grandchild.category_id }}" {% if (selected_category_id == grandchild.category_id) %} {{ 'selected' }} {% endif %}> &nbsp; -- {{ grandchild.name }}</option>
+          {% endfor %}
+        {% endif %}
+        
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </select>
+  <input type="search" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control search--input" />
+  <button type="button" class="search--button" id="search-btn"><i class="fa fa-search"></i></button>
+</div>

@@ -1,0 +1,25 @@
+/* Nice Colors . Begin */
+/* Warning!
+ * Not remove these comments!
+ * It is neccessary for corect theme colors saving from admin part
+*/
+:root {
+  --color-primary--darker-3: %color-primary--darker-3%;
+  --color-primary--darker-2: %color-primary--darker-2%;
+  --color-primary--darker-1: %color-primary--darker-1%;
+  --color-primary: %color-primary%;
+  --color-primary--lighter-1: %color-primary--lighter-1%;
+  --color-primary--lighter-2: %color-primary--lighter-2%;
+  --color-primary--lighter-3: %color-primary--lighter-3%;
+  
+  --color-accent--darker-3: %color-accent--darker-3%;
+  --color-accent--darker-2: %color-accent--darker-2%;
+  --color-accent--darker-1: %color-accent--darker-1%;
+  --color-accent: %color-accent%;
+  --color-accent--lighter-1: %color-accent--lighter-1%;
+  --color-accent--lighter-2: %color-accent--lighter-2%;
+  --color-accent--lighter-3: %color-accent--lighter-3%;
+  
+  --color-footer-bg: %color-footer-bg%;
+}
+/* Nice Colors . End */

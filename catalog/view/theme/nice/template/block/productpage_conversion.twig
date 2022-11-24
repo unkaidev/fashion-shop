@@ -1,0 +1,83 @@
+<div class="product-conversion-block">
+  <div class="row">
+  {% if price %}
+    <ul class="list-unstyled col-xs-6">
+      {% if not special %}
+        <li>
+          <h2 class="price">{{ price }}</h2>
+        </li>
+      {% else %}
+        <li><span class="price price-old">{{ price }}</span></li>
+        <li>
+          <h2 class="price-special">{{ special }}</h2>
+        </li>
+      {% endif %}
+      {% if tax %}
+        <li class="tax">{{ text_tax }} {{ tax }}</li>
+        {% endif %}
+        {% if points %}
+        <li>{{ text_points }} {{ points }}</li>
+        {% endif %}
+        {% if discounts %}
+        <li>
+          <hr>
+        </li>
+        {% for discount in discounts %}
+          <li>{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
+          {% endfor %}
+        {% endif %}
+    </ul>
+  {% endif %}
+
+  <div class="col-xs-6">
+    <div class="btn-group pull-right">
+      <div class="product-page--compare" type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');"><i class="fa fa-exchange"></i></div>
+      <div class="product-page--wishlist" type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');"><i class="fa fa-heart-o"></i></div>
+    </div>
+  </div>
+
+
+    <div class="col-xs-12">
+    <div class="form-group row">
+      {% if minimum > 1 %}
+      <div class="col-sm-12"><div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div></div>
+      {% endif %}
+
+      <label class="control-label col-sm-2 input-quantity--label" id="input-quantity--label" for="input-quantity">{{ entry_qty }}</label>
+      <div class="col-sm-4 input-quantity--container">
+        <div class="input-group">
+          <div class="input-group-btn"><button id="input-quantity--minus">–</button></div>
+          <input class="form-control" type="text" name="quantity" id="input-quantity" size="1" value="{{ minimum }}" />
+          <div class="input-group-btn"><button id="input-quantity--pluse">+</button></div> 
+          <input type="hidden" name="product_id" size="1" value="{{ product_id }}" />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-accent btn-lg btn-block">{{ button_cart }}</button>
+      </div>
+    </div>
+    <div id="add-to-cart-error"></div>
+  </div>
+
+  {% if options or recurrings %}
+  <div class="col-xs-12">
+    {{ block_options }}
+    {% if recurrings %}
+    <hr>
+    <h3>{{ text_payment_recurring }}</h3>
+    <div class="form-group required">
+      <select name="recurring_id" class="form-control">
+        <option value="">{{ text_select }}</option>
+        {% for recurring in recurrings %}
+        <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+        {% endfor %}
+      </select>
+      <div class="help-block" id="recurring-description"></div>
+    </div>
+    {% endif %}
+
+  </div>           
+  {% endif %}                    
+
+</div>
+</div><!-- /product-conversion-block -->

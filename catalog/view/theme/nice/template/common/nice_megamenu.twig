@@ -1,0 +1,65 @@
+<div class="container">
+  <button class="main-nav-trigger"><div></div></button>
+  <nav role="navigation" class="main-nav-wrap main-nav-wrap--in-container">
+    {#<div class="container">#}
+    <ul class="main-nav">
+      {% for category in categories_columned %}
+      {% if category.nice_menu_category_columns < 2 and not(category.nmm_promo_status) %}
+        {% set class = 'one-column' %}
+      {% else %}
+        {% set class = '' %}
+      {% endif %}
+      {% if category.children %}
+      <li class="has-subnav {{ class }}">
+        <a href="{{ category.href }}" class="has-subnav-link">{{ category.name }}</a>
+        <ul class="main-dropdown subnav">
+          
+          {% for column_i,column in category.children %}
+          {% for child in column %}
+          
+          {% if child.grandchildren %}
+          <li class="has-subnav" data-nav="{{ column_i }}">
+            <a href="{{ child.href }}" class="has-subnav-link subnav-header">{{ child.name }}</a>           
+            <ul class="subnav">
+              {% for grandchild in child.grandchildren %}
+              <li><a href="{{ grandchild.href }}">{{ grandchild.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% else %}
+          <li class="has-subnav" data-nav="{{ column_i }}"><a href="{{ child.href }}" class="subnav-header">{{ child.name }}</a></li>
+          {% endif %}
+          
+          {% endfor %}
+          {% endfor %}
+          
+          {% for column_i,column in category.children %}
+            <li class="nav-col" data-col="{{ column_i }}"><ul class="nav"></ul></li>
+          {% endfor %}
+          
+          {% if category.nmm_promo_status %} 
+          <li class="subnav-promo">
+            {% if category.nmm_image %}
+            <img src="{{ category.nmm_image }}" alt="{{ category.nmm_alt }}" class="promo-img img-responsive">
+            {% endif %}
+            {% if category.nmm_title or category.nmm_text or category.nmm_anchor %}
+            <div class="promo-body">
+              {% if category.nmm_title %}<p class="subnav-promo-header">{{ category.nmm_title }}</p>{% endif %}
+              {% if category.nmm_text %}<div class="subnav-promo-text">{{ category.nmm_text }}</div>{% endif %}
+              {% if category.nmm_link and category.nmm_anchor %}<a href="{{ category.nmm_link }}">{{ category.nmm_anchor }}</a>{% endif %}
+            </div>
+            {% endif %}
+          </li>
+          {% endif %}          
+          
+        </ul>        
+      </li>
+      {% else %}
+        <li><a href="{{ category.href }}">{{ category.name }}</a></li>
+      {% endif %}
+      {% endfor %}
+      
+    </ul>
+    {#</div>#}
+  </nav>
+</div>

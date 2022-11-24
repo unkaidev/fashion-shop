@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Nice Theme: Product List</name>
+  <code>NiceTheme_ProductList</code>
+  <version>1.0.0 (for OpenCart 3.x)</version>
+  <author>Serge Tkach</author>
+  <link>https://sergetkach.com/</link>
+
+
+
+  <file path="catalog/controller/product/{category,manufacturer,product,search,special}.php">
+    <operation>
+      <search>
+        <![CDATA[$data['products'][] = array(]]>
+      </search>
+      <add position="before">
+        <![CDATA[				// Nice Theme . Begin
+				$data['nice']['productlist_image_margins'] = $this->config->get('theme_nice_productlist_image_margins');
+				$data['nice']['productlist_description'] = $this->config->get('theme_nice_productlist_description');
+				$data['nice']['productlist_description_on_mobile'] = $this->config->get('theme_nice_productlist_description_on_mobile');
+				$data['nice']['productlist_name_font_weight'] = $this->config->get('theme_nice_productlist_name_font_weight');
+				$data['nice']['productlist_price_font_weight'] = $this->config->get('theme_nice_productlist_price_font_weight');
+				$data['nice']['productlist_grid_hover_effect'] = $this->config->get('theme_nice_productlist_grid_hover_effect');
+				$data['nice']['productlist_cols_on_mobile'] = $this->config->get('theme_nice_productlist_cols_on_mobile');
+				// Nice Theme . End
+]]>
+      </add>
+    </operation>  
+  </file>
+  
+  <file path="catalog/controller/extension/module/{bestseller,latest,special}.php">
+    <operation>
+      <search>
+        <![CDATA[$data['products'][] = array(]]>
+      </search>
+      <add position="before">
+        <![CDATA[				// Nice Theme . Begin
+				$data['nice']['productlist_image_margins'] = $this->config->get('theme_nice_productlist_image_margins');
+				$data['nice']['productlist_description'] = $this->config->get('theme_nice_productlist_description');
+				$data['nice']['productlist_description_on_mobile'] = $this->config->get('theme_nice_productlist_description_on_mobile');
+				$data['nice']['productlist_name_font_weight'] = $this->config->get('theme_nice_productlist_name_font_weight');
+				$data['nice']['productlist_price_font_weight'] = $this->config->get('theme_nice_productlist_price_font_weight');
+				$data['nice']['productlist_grid_hover_effect'] = $this->config->get('theme_nice_productlist_grid_hover_effect');
+				$data['nice']['productlist_cols_on_mobile'] = $this->config->get('theme_nice_productlist_cols_on_mobile');
+				// Nice Theme . End
+]]>
+      </add>
+    </operation>  
+  </file>
+  
+  <file path="catalog/controller/extension/module/featured.php">
+    <operation>
+      <search>
+        <![CDATA[$data['products'][] = array(]]>
+      </search>
+      <add position="before">
+        <![CDATA[					// Nice Theme . Begin
+					$data['nice']['productlist_image_margins'] = $this->config->get('theme_nice_productlist_image_margins');
+					$data['nice']['productlist_description'] = $this->config->get('theme_nice_productlist_description');
+					$data['nice']['productlist_description_on_mobile'] = $this->config->get('theme_nice_productlist_description_on_mobile');
+					$data['nice']['productlist_name_font_weight'] = $this->config->get('theme_nice_productlist_name_font_weight');
+					$data['nice']['productlist_price_font_weight'] = $this->config->get('theme_nice_productlist_price_font_weight');
+					$data['nice']['productlist_grid_hover_effect'] = $this->config->get('theme_nice_productlist_grid_hover_effect');
+					$data['nice']['productlist_cols_on_mobile'] = $this->config->get('theme_nice_productlist_cols_on_mobile');
+					// Nice Theme . End
+]]>
+      </add>
+    </operation>  
+  </file>
+  
+  
+</modification>

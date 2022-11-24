@@ -1,0 +1,8 @@
+<!-- Menu Top -->
+<nav id="menu-top" class="navbar pull-left">
+  <ul class="nav navbar-nav">
+    {% for item in menu_items %}
+    <li><a href="{{ item.href }}">{{ item.title }}</a></li>
+    {% endfor %}
+  </ul>       
+</nav>

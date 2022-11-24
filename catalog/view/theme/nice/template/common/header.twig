@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+<link href="catalog/view/theme/nice/stylesheet/stylesheet.css" rel="stylesheet">
+{#<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,500i,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Noto+Sans:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=Roboto+Flex:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=Nunito+Sans:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" type="text/css" />#}
+<link href="//fonts.googleapis.com/css?family=Inter:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" type="text/css" />
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script src="catalog/view/theme/nice/javascript/common.js" type="text/javascript"></script>
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+</head>
+<body>
+<nav id="top">
+  <div class="container top-container">
+    {{ menu_top }}
+    
+    <div class="top-buttons pull-right">     
+        
+      {{ currency }}
+      {{ language }}
+      
+      {#<div class="nav top-links top-buttons--item">
+        <ul class="list-inline">
+          <li><a href="{{ wishlist }}" id="wishlist-total" title="{{ text_wishlist }}"><i class="fa fa-heart-o"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_wishlist }}</span></a></li>
+          <li><a href="{{ compare }}" title="{{ nice_text_compare }}"><i class="fa fa-balance-scale"></i> <span class="hidden-xs">{{ nice_text_compare }}</span></a></li>
+        </ul>
+      </div>#}
+        
+      <div class="account-container top-buttons--item">
+        <div class="btn-group dropdown">
+          <a href="{{ account }}" title="{{ text_account }}" class="btn btn-link dropdown-toggle padding-r-n-xs" data-toggle="dropdown"><i class="fa fa-user-o"></i> <span class="">{{ nice_text_account }}</span> <i class="fa fa-caret-down"></i></a>
+
+          <ul class="dropdown-menu dropdown-menu-right">
+            {% if logged %}
+            <li><a href="{{ account }}">{{ text_account }}</a></li>
+            <li><a href="{{ order }}">{{ text_order }}</a></li>
+            <li><a href="{{ transaction }}">{{ text_transaction }}</a></li>
+            <li><a href="{{ download }}">{{ text_download }}</a></li>
+            <li><a href="{{ logout }}">{{ text_logout }}</a></li>
+            {% else %}
+            <li><a href="{{ register }}">{{ text_register }}</a></li>
+            <li><a href="{{ login }}">{{ text_login }}</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>      
+    </div>
+  </div>
+</nav>
+<header>
+  <div class="container">
+    <div id="top-2">      
+      <div class="top-2--column logo-column">
+        <div id="logo">
+          {% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
+          {% else %}
+          <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}
+        </div>
+      </div>
+        
+      {#<div class="top-2--column tagline-column">
+        <div>Some text here</div>
+      </div>#}
+        
+      <div class="top-2--column search-column--desktop">{{ search }}</div>
+            
+      <div class="top-2--column header-icons-column">
+        <div class="header-icons-container text-right">          
+          <div class="header-icons-item">
+            <a href="{{ contact }}">
+              <span class="fa-stack fa-lg header-icon">
+                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i class="fa fa-phone fa-stack-1x "></i>
+              </span>
+              <span class="header-icon-label hidden-xs"><span class="hidden-xs hidden-sm hidden-md"> {{ telephone }}</span></span>
+            </a>
+          </div>                  
+          <div class="header-icons-item">
+            <a href="{{ wishlist }}" id="wishlist-total">
+              <i class="fa fa-heart-o fa-2x fa-lg header-icon"></i>
+              <span class="header-icon-label hidden-xs">{{ text_wishlist }}</span>
+            </a>
+          </div>          
+          <div class="header-icons-item">
+            <a href="{{ compare }}">
+              <span class="fa-stack fa-lg header-icon">
+                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i class="fa fa-exchange fa-stack-1x "></i>
+              </span>
+              <span class="header-icon-label hidden-xs">{{ nice_text_compare }}</span>
+            </a>
+          </div>          
+          {#<div class="header-icons-item">
+            <i class="fa fa-user-circle-o fa-2x fa-lg header-icon"></i>
+            <span class="header-icon-label hidden-xs">Account</span>
+          </div>#}
+          </div>
+      </div>
+          
+      <div class="top-2--column cart-column text-right">{{ cart }}</div>
+      
+    </div>
+    <div class="search--mobile"></div>
+  </div>
+</header>
+{{ menu }}
