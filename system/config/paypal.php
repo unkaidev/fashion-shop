@@ -3,11 +3,13 @@ $_['paypal_setting'] = array(
 	'partner' => array(
 		'production' => array(
 			'partner_id' => 'TY2Q25KP2PX9L',
-			'client_id' => 'AbjxI4a9fMnew8UOMoDFVwSh7h1aeOBaXpd2wcccAnuqecijKIylRnNguGRWDrEPrTYraBQApf_-O3_4'
+			'client_id' => 'AbjxI4a9fMnew8UOMoDFVwSh7h1aeOBaXpd2wcccAnuqecijKIylRnNguGRWDrEPrTYraBQApf_-O3_4',
+			'partner_attribution_id' => 'OPENCARTLIMITED_Cart_OpenCartPCP'
 		),
 		'sandbox' => array(
 			'partner_id' => 'EJNHWRJJNB38L',
-			'client_id' => 'AfeIgIr-fIcEucsVXvdq21Ufu0wAALWhgJdVF4ItUK1IZFA9I4JIRdfyJ9vWrd9oi0B6mBGtJYDrlYsG'
+			'client_id' => 'AfeIgIr-fIcEucsVXvdq21Ufu0wAALWhgJdVF4ItUK1IZFA9I4JIRdfyJ9vWrd9oi0B6mBGtJYDrlYsG',
+			'partner_attribution_id' => 'OPENCARTLIMITED_Cart_OpenCartPCP'
 		)
 	),
 	'order_status' => array(
@@ -54,7 +56,23 @@ $_['paypal_setting'] = array(
 			'button_size' => 'large',
 			'button_color' => 'gold',
 			'button_shape' => 'rect',
-			'button_label' => 'paypal'
+			'button_label' => 'paypal',
+			'button_funding' => array(
+				'card' => 0,
+				'credit' => 0,
+				'bancontact' => 0,
+				'blik' => 0,
+				'eps' => 0,
+				'giropay' => 0,
+				'ideal' => 0,
+				'mercadopago' => 0,
+				'mybank' => 0,
+				'p24' => 0,
+				'sepa' => 0,
+				'sofort' => 0,
+				'venmo' => 0,
+				'paylater' => 0
+			)
 		),
 		'card' => array(
 			'status' => false,
@@ -62,14 +80,14 @@ $_['paypal_setting'] = array(
 			'form_size' => 'large',
 			'secure_status' => true,
 			'secure_scenario' => array(
-				'undefined' => 1,
-				'error' => 0,
-				'skipped_by_buyer' => 0,
-				'failure' => 0,
-				'bypassed' => 0,
-				'attempted' => 1,
-				'unavailable' => 0,
-				'card_ineligible' => 1
+				'failed_authentication' => 0,
+				'rejected_authentication' => 0,
+				'attempted_authentication' => 1,
+				'unable_authentication' => 0,
+				'challenge_authentication' => 0,
+				'card_ineligible' => 1,
+				'system_unavailable' => 0,
+				'system_bypassed' => 1
 			)
 		),
 		'message' => array(
@@ -352,6 +370,68 @@ $_['paypal_setting'] = array(
 		'large' => '350px',
 		'responsive' => ''
 	),
+	'button_funding' => array(
+		'card' => array(
+			'code' => 'card',
+			'name' => 'text_card',
+		),
+		'credit' => array(
+			'code' => 'credit',
+			'name' => 'text_credit',
+		),
+		'bancontact' => array(
+			'code' => 'bancontact',
+			'name' => 'text_bancontact',
+		),
+		'bancontact' => array(
+			'code' => 'bancontact',
+			'name' => 'text_bancontact',
+		),
+		'blik' => array(
+			'code' => 'blik',
+			'name' => 'text_blik',
+		),
+		'eps' => array(
+			'code' => 'eps',
+			'name' => 'text_eps',
+		),
+		'giropay' => array(
+			'code' => 'giropay',
+			'name' => 'text_giropay',
+		),
+		'ideal' => array(
+			'code' => 'ideal',
+			'name' => 'text_ideal',
+		),
+		'mercadopago' => array(
+			'code' => 'mercadopago',
+			'name' => 'text_mercadopago',
+		),
+		'mybank' => array(
+			'code' => 'mybank',
+			'name' => 'text_mybank',
+		),
+		'p24' => array(
+			'code' => 'p24',
+			'name' => 'text_p24',
+		),
+		'sepa' => array(
+			'code' => 'sepa',
+			'name' => 'text_sepa',
+		),
+		'sofort' => array(
+			'code' => 'sofort',
+			'name' => 'text_sofort',
+		),
+		'venmo' => array(
+			'code' => 'venmo',
+			'name' => 'text_venmo',
+		),
+		'paylater' => array(
+			'code' => 'paylater',
+			'name' => 'text_paylater',
+		)
+	),
 	'form_align' => array(
 		'left' => array(
 			'code' => 'left',
@@ -386,52 +466,52 @@ $_['paypal_setting'] = array(
 		'responsive' => ''
 	),
 	'secure_scenario' => array(
-		'undefined' => array(
-			'code' => 'undefined',
-			'name' => 'text_3ds_undefined',
-			'error' => 'error_3ds_undefined',
+		'failed_authentication' => array(
+			'code' => 'failed_authentication',
+			'name' => 'text_3ds_failed_authentication',
+			'error' => 'error_3ds_failed_authentication',
+			'recommended' => 0
+		),
+		'rejected_authentication' => array(
+			'code' => 'rejected_authentication',
+			'name' => 'text_3ds_rejected_authentication',
+			'error' => 'error_3ds_rejected_authentication',
+			'recommended' => 0
+		),
+		'attempted_authentication' => array(
+			'code' => 'attempted_authentication',
+			'name' => 'text_3ds_attempted_authentication',
+			'error' => 'error_3ds_attempted_authentication',
 			'recommended' => 1
 		),
-		'error' => array(
-			'code' => 'error',
-			'name' => 'text_3ds_error',
-			'error' => 'error_3ds_undefined',
+		'unable_authentication' => array(
+			'code' => 'unable_authentication',
+			'name' => 'text_3ds_unable_authentication',
+			'error' => 'error_3ds_unable_authentication',
 			'recommended' => 0
 		),
-		'skipped_by_buyer' => array(
-			'code' => 'skipped_by_buyer',
-			'name' => 'text_3ds_skipped_by_buyer',
-			'error' => 'error_3ds_skipped_by_buyer',
-			'recommended' => 0
-		),
-		'failure' => array(
-			'code' => 'failure',
-			'name' => 'text_3ds_failure',
-			'error' => 'error_3ds_failure',
-			'recommended' => 0
-		),
-		'bypassed' => array(
-			'code' => 'bypassed',
-			'name' => 'text_3ds_bypassed',
-			'error' => 'error_3ds_bypassed',
-			'recommended' => 0
-		),
-		'attempted' => array(
-			'code' => 'attempted',
-			'name' => 'text_3ds_attempted',
-			'error' => 'error_3ds_attempted',
-			'recommended' => 1
-		),
-		'unavailable' => array(
-			'code' => 'unavailable',
-			'name' => 'text_3ds_unavailable',
-			'error' => 'error_3ds_unavailable',
+		'challenge_authentication' => array(
+			'code' => 'challenge_authentication',
+			'name' => 'text_3ds_challenge_authentication',
+			'error' => 'error_3ds_challenge_authentication',
 			'recommended' => 0
 		),
 		'card_ineligible' => array(
 			'code' => 'card_ineligible',
 			'name' => 'text_3ds_card_ineligible',
 			'error' => 'error_3ds_card_ineligible',
+			'recommended' => 1
+		),
+		'system_unavailable' => array(
+			'code' => 'system_unavailable',
+			'name' => 'text_3ds_system_unavailable',
+			'error' => 'error_3ds_system_unavailable',
+			'recommended' => 0
+		),
+		'system_bypassed' => array(
+			'code' => 'system_bypassed',
+			'name' => 'text_3ds_system_bypassed',
+			'error' => 'error_3ds_system_bypassed',
 			'recommended' => 1
 		)
 	),

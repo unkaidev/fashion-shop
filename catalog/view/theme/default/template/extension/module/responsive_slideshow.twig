@@ -1,0 +1,22 @@
+<div id="wowslider-container1" class="wowslider-container{{ module }}">
+	<div class="ws_images">
+		<ul>
+			{% for banner in banners %}
+			{% if banner.link %}
+			<li>
+				<a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" title="{{ banner.title }}"/></a>
+			</li>
+			{% else %}
+			<li>
+				<img src="{{ banner.image }}" alt="{{ banner.title }}" title="{{ banner.title }}"/>
+			</li>
+			{% endif %}
+			{% endfor %} 
+		</ul>
+	</div>
+</div>	
+<script type="text/javascript" src="catalog/view/javascript/jquery/responsive-slider/wowslider.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/jquery/responsive-slider/script.js"></script>	
+<script>
+jQuery(".wowslider-container{{ module }}").wowSlider({effect:"{{ effect }}",duration: {{ duration }} * {{ duration1 }}, delay: {{ delay }} * {{ delay1 }} ,autoPlay: {{ autoplay }} ,playPause: {{ playpause }} ,stopOnHover: {{ stoponhover }} ,loop: {{ loop }} ,caption: {{ caption }} ,captionEffect:"parallax",controls: {{ controls }} ,controlsThumb: {{ controlsthumb }} });
+</script>

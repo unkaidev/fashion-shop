@@ -1,0 +1,77 @@
+.v-view {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 12px;
+    text-transform: uppercase;
+    width: 110px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #fff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    opacity: 0;
+    z-index: 2;
+    background: #23a1d1;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.product-thumb {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-layout:hover .v-view {
+    opacity: 1;
+    -webkit-animation: zoomIn 300ms ease-in-out;
+    -moz-animation: zoomIn 300ms ease-in-out;
+    -ms-animation: zoomIn 300ms ease-in-out;
+    animation: zoomIn 300ms ease-in-out;
+}
+
+.product-thumb:after {
+    content: "";
+    width: 0;
+    height: 0;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    -webkit-transition: all 300ms ease-in;
+    -moz-transition: all 300ms ease-in;
+    -ms-transition: all 300ms ease-in;
+    -o-transition: all 300ms ease-in;
+    transition: all 300ms ease-in;
+    pointer-events: none;
+}
+
+.product-layout:hover>.product-thumb:after {
+    width: 100%;
+    height: 91%;
+}
+
+#common-home .product-layout:hover>.product-thumb:after {
+    height: 92%;
+}
+
+.product-layout.product-list:hover>.product-thumb:after {
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+    .v-view.qu {
+        font-size: 0;
+        width: 70px;
+    }
+    .v-view.qu i.fa.fa-eye {
+        margin-top: 11px;
+    }
+}

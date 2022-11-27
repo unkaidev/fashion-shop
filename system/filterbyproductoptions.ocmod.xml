@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+
+    <name><![CDATA[Filter By Options]]></name>
+    <code>Filter By Options</code>
+    <version>OC 3.0</version>
+    <author>Vikaspal</author>   
+    <link></link>
+    <file path="catalog/model/catalog/product.php">
+        <operation>
+            <search><![CDATA[$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd]]></search>
+            <add position="before"><![CDATA[
+             	if (!empty($this->request->get['filter_option_value_id'])) {
+                    $sql .= " LEFT JOIN " . DB_PREFIX . "product_option_value pov ON (p.product_id = pov.product_id)";
+                }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd]]></search>
+            <add position="after"><![CDATA[
+               if (!empty($this->request->get['filter_option_value_id'])) {
+                    $implode = array();
+                    $data['filter_option_value_id'] = str_replace('%2C', ',', $this->request->get['filter_option_value_id']);
+                    $filters = explode(',', $data['filter_option_value_id']);
+
+                    foreach ($filters as $filter_id) {
+                        $implode[] = (int)$filter_id;
+                    }
+
+                    $sql .= " AND pov.option_value_id IN (" . implode(',', $implode) . ")";
+                }
+            ]]></add>
+        </operation> 
+    </file>
+</modification>

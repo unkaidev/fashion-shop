@@ -55,7 +55,7 @@
 								<div class="col-sm-10">
 									<div id="section_connect" {% if client_id and secret and merchant_id %}class="hidden"{% endif %}>
 										<style type="text/css">
-											a[data-paypal-button="PPLtBlue"]::before {
+											#button_connect_ppcp::before {
 												content: "";
 												background: url(https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png) 11px no-repeat #fff;
 												background-size: 80px;
@@ -67,6 +67,19 @@
 												border-bottom-left-radius: 5px;
 												border-top-left-radius: 5px;
 												margin-top: -12px;
+											}
+											#button_connect_express_checkout {
+												display: inline;
+												padding: 0px 0px;
+												vertical-align: top;
+												font-family: 'Open Sans', sans-serif;
+												font-size: 12px;
+												color: #1e91cf;
+												background: none;
+												border: none;
+											}
+											#button_connect_express_checkout::before {
+												display:none;
 											}
 										</style>
 										<a id="button_connect_ppcp" href="{{ configure_url[environment]['ppcp'] }}" target="_blank" data-paypal-button="PPLtBlue" data-paypal-onboard-complete="onBoardedCallback">{{ button_connect }}</a><br />
@@ -128,6 +141,7 @@
 										<option value="0" selected="selected">{{ text_disabled }}</option>
 										{% endif %}
 									</select>
+									<p class="alert alert-info" style="margin: 15px 0px 0px 0px">{{ text_message }}</p>
 								</div>
 							</div>
 							{% endif %}
@@ -205,10 +219,12 @@
 								<div class="col-sm-10">
 									<select name="payment_paypal_currency_code" id="input_currency_code" class="form-control">
 										{% for currency in setting['currency'] %}
+										{% if currency['express_status'] %}
 										{% if currency['code'] == currency_code %}
 										<option value="{{ currency['code'] }}" selected="selected">{{ attribute(_context, currency['name']) }}</option>
 										{% else %}
 										<option value="{{ currency['code'] }}">{{ attribute(_context, currency['name']) }}</option>
+										{% endif %}
 										{% endif %}
 										{% endfor %}
 									</select>
@@ -218,6 +234,28 @@
 								<label class="col-sm-2 control-label" for="input_currency_value"><span data-toggle="tooltip" title="{{ help_currency_value }}">{{ entry_currency_value }}</span></label>
 								<div class="col-sm-10">
 									<input type="text" name="payment_paypal_currency_value" value="{{ currency_value }}" placeholder="{{ entry_currency_value }}" id="input_currency_value" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input_card_currency_code"><span data-toggle="tooltip" title="{{ help_card_currency_code }}">{{ entry_card_currency_code }}</span></label>
+								<div class="col-sm-10">
+									<select name="payment_paypal_card_currency_code" id="input_card_currency_code" class="form-control">
+										{% for currency in setting['currency'] %}
+										{% if currency['card_status'] %}
+										{% if currency['code'] == card_currency_code %}
+										<option value="{{ currency['code'] }}" selected="selected">{{ attribute(_context, currency['name']) }}</option>
+										{% else %}
+										<option value="{{ currency['code'] }}">{{ attribute(_context, currency['name']) }}</option>
+										{% endif %}
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input_card_currency_value"><span data-toggle="tooltip" title="{{ help_card_currency_value }}">{{ entry_card_currency_value }}</span></label>
+								<div class="col-sm-10">
+									<input type="text" name="payment_paypal_card_currency_value" value="{{ card_currency_value }}" placeholder="{{ entry_card_currency_value }}" id="input_card_currency_value" class="form-control" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -315,6 +353,19 @@
 										{% endfor %}
 									</select>
 								</div>
+							</div>
+							<div class="form-group">
+								{% for button_funding in setting['button_funding'] %}
+								<label class="col-sm-2 control-label" for="input_checkout_express_button_funding">{{ attribute(_context, button_funding['name']) }}</label>
+								<div class="col-sm-4">
+									<select name="payment_paypal_setting[checkout][express][button_funding][{{ button_funding['code'] }}]" class="form-control">
+										<option value="0" {% if (setting['checkout']['express']['button_funding'][button_funding['code']] == 0) %}selected="selected"{% endif %}>{{ text_auto }}</option>
+										<option value="1" {% if (setting['checkout']['express']['button_funding'][button_funding['code']] == 1) %}selected="selected"{% endif %}>{{ text_enabled }}</option>
+										<option value="2" {% if (setting['checkout']['express']['button_funding'][button_funding['code']] == 2) %}selected="selected"{% endif %}>{{ text_disabled }}</option>	
+									</select>
+									<br />
+								</div>
+								{% endfor %}
 							</div>
 						</div>
 						<div class="tab-pane hidden" id="tab_checkout_card">
@@ -487,7 +538,7 @@
 	</div>
 </div>
 {% if client_id and secret and merchant_id %}
-<script type="text/javascript" src = "https://www.paypal.com/sdk/js?components=hosted-fields&client-id={{ client_id }}&merchant-id={{ merchant_id }}" data-partner-attribution-id="{{ setting['partner'][environment]['partner_id'] }}" data-client-token="{{ client_token }}"></script>
+<script type="text/javascript" src = "https://www.paypal.com/sdk/js?components=hosted-fields&client-id={{ client_id }}&merchant-id={{ merchant_id }}" data-partner-attribution-id="{{ setting['partner'][environment]['partner_attribution_id'] }}" data-client-token="{{ client_token }}"></script>
 <script type="text/javascript">
 
 try {
@@ -533,6 +584,19 @@ $('#button_disconnect').on('click', function() {
 		$('#input_merchant_id').val('');
 		$('#section_connect').removeClass('hidden');
 		$('#section_disconnect').addClass('hidden');
+		
+		$.ajax({
+			type: 'post',
+			url: '{{ disconnect_url }}',
+			data: '',
+			dataType: 'json',
+			success: function(json) {
+				
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
 	}
 });
 
@@ -552,6 +616,19 @@ $('#input_environment').on('change', function() {
 	$('#input_merchant_id').val('');
 	$('#section_connect').removeClass('hidden');
 	$('#section_disconnect').addClass('hidden');
+	
+	$.ajax({
+		type: 'post',
+		url: '{{ disconnect_url }}',
+		data: '',
+		dataType: 'json',
+		success: function(json) {
+				
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
 });
 
 $('#input_checkout_message_layout').on('change', function() {
