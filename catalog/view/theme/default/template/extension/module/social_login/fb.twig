@@ -1,0 +1,49 @@
+{{ header }}
+<div class="container">
+    {% if error_warning %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+    {% endif %}
+    <div id="content" class="col-sm-12" style="margin-top:20px;">
+        {% if userData %}
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                {% if userData.email %}
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
+                        <div class="col-sm-10">
+                            <input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" readonly />
+                            <?php if ($error_email) { ?>
+                            <div class="text-danger">{{ error_email }}</div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if userData.telephone %}
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-telephone">{{ entry_mobile }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_mobile }}" id="input-telephone" class="form-control" />
+                            <?php if ($error_telephone) { ?>
+                            <div class="text-danger">{{ error_telephone }}</div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-password">{{ entry_password }}</label>
+                    <div class="col-sm-10">
+                        <input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />
+                        <?php if ($error_password) { ?>
+                        <div class="text-danger">{{ error_password }}</div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="pull-right">
+                        <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{{ footer }}

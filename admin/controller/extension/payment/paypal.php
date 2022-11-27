@@ -39,6 +39,7 @@ class ControllerExtensionPaymentPayPal extends Controller {
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
 		$data['partner_url'] = str_replace('&amp;', '%26', $this->url->link('extension/payment/paypal', 'user_token=' . $this->session->data['user_token'], true));
 		$data['callback_url'] = str_replace('&amp;', '&', $this->url->link('extension/payment/paypal/callback', 'user_token=' . $this->session->data['user_token'], true));
+		$data['disconnect_url'] =  str_replace('&amp;', '&', $this->url->link('extension/payment/paypal/disconnect', 'user_token=' . $this->session->data['user_token'], true));
 		$data['configure_smart_button_url'] = $this->url->link('extension/payment/paypal/configureSmartButton', 'user_token=' . $this->session->data['user_token'], true);
 		
 		if (isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1'))) {
@@ -62,7 +63,8 @@ class ControllerExtensionPaymentPayPal extends Controller {
 			
 			$paypal_info = array(
 				'client_id' => $this->session->data['shared_id'],
-				'environment' => $environment
+				'environment' => $environment,
+				'partner_attribution_id' => $data['setting']['partner'][$environment]['partner_attribution_id']
 			);
 					
 			$paypal = new PayPal($paypal_info);
@@ -77,10 +79,29 @@ class ControllerExtensionPaymentPayPal extends Controller {
 											
 			$result = $paypal->getSellerCredentials($data['setting']['partner'][$environment]['partner_id']);
 			
+			$client_id = '';
+			$secret = '';
+			
 			if (isset($result['client_id']) && isset($result['client_secret'])) {
 				$client_id = $result['client_id'];
 				$secret = $result['client_secret'];
 			}
+			
+			$paypal_info = array(
+				'partner_id' => $data['setting']['partner'][$environment]['partner_id'],
+				'client_id' => $client_id,
+				'secret' => $secret,
+				'environment' => $environment,
+				'partner_attribution_id' => $data['setting']['partner'][$environment]['partner_attribution_id']
+			);
+		
+			$paypal = new PayPal($paypal_info);
+			
+			$token_info = array(
+				'grant_type' => 'client_credentials'
+			);	
+		
+			$paypal->setAccessToken($token_info);
 						
 			$webhook_info = array(
 				'url' => $data['catalog'] . 'index.php?route=extension/payment/paypal/webhook',
@@ -92,8 +113,7 @@ class ControllerExtensionPaymentPayPal extends Controller {
 					array('name' => 'PAYMENT.CAPTURE.PENDING'),
 					array('name' => 'PAYMENT.CAPTURE.REFUNDED'),
 					array('name' => 'PAYMENT.CAPTURE.REVERSED'),
-					array('name' => 'CHECKOUT.ORDER.COMPLETED'),
-					array('name' => 'CHECKOUT.ORDER.APPROVED')
+					array('name' => 'CHECKOUT.ORDER.COMPLETED')
 				)
 			);
 			
@@ -109,7 +129,7 @@ class ControllerExtensionPaymentPayPal extends Controller {
 				$error_messages = array();
 				
 				$errors = $paypal->getErrors();
-								
+						
 				foreach ($errors as $error) {
 					if (isset($error['name']) && ($error['name'] == 'CURLE_OPERATION_TIMEOUTED')) {
 						$error['message'] = $this->language->get('error_timeout');
@@ -128,6 +148,16 @@ class ControllerExtensionPaymentPayPal extends Controller {
 			}
    			
 			$merchant_id = $this->request->get['merchantIdInPayPal'];
+			
+			$setting = $this->model_setting_setting->getSetting('payment_paypal');
+						
+			$setting['payment_paypal_environment'] = $environment;
+			$setting['payment_paypal_client_id'] = $client_id;
+			$setting['payment_paypal_secret'] = $secret;
+			$setting['payment_paypal_merchant_id'] = $merchant_id;
+			$setting['payment_paypal_webhook_id'] = $webhook_id;
+
+			$this->model_setting_setting->editSetting('payment_paypal', $setting);
 						
 			unset($this->session->data['authorization_code']);
 			unset($this->session->data['shared_id']);
@@ -239,8 +269,10 @@ class ControllerExtensionPaymentPayPal extends Controller {
 		
 		if (isset($this->request->post['payment_paypal_currency_code'])) {
 			$data['currency_code'] = $this->request->post['payment_paypal_currency_code'];
-		} else {
+		} elseif ($this->config->get('payment_paypal_currency_value')) {
 			$data['currency_code'] = $this->config->get('payment_paypal_currency_code');
+		} else {
+			$data['currency_code'] = 'USD';
 		}
 		
 		if (isset($this->request->post['payment_paypal_currency_value'])) {
@@ -249,6 +281,22 @@ class ControllerExtensionPaymentPayPal extends Controller {
 			$data['currency_value'] = $this->config->get('payment_paypal_currency_value');
 		} else {
 			$data['currency_value'] = '1';
+		}
+		
+		if (isset($this->request->post['payment_paypal_card_currency_code'])) {
+			$data['card_currency_code'] = $this->request->post['payment_paypal_card_currency_code'];
+		} elseif ($this->config->get('payment_paypal_card_currency_value')) {
+			$data['card_currency_code'] = $this->config->get('payment_paypal_card_currency_code');
+		} else {
+			$data['card_currency_code'] = 'USD';
+		}
+		
+		if (isset($this->request->post['payment_paypal_card_currency_value'])) {
+			$data['card_currency_value'] = $this->request->post['payment_paypal_card_currency_value'];
+		} elseif ($this->config->get('payment_paypal_card_currency_value')) {
+			$data['card_currency_value'] = $this->config->get('payment_paypal_card_currency_value');
+		} else {
+			$data['card_currency_value'] = '1';
 		}
 						
 		if (isset($this->request->post['payment_paypal_setting'])) {
@@ -263,7 +311,8 @@ class ControllerExtensionPaymentPayPal extends Controller {
 			$paypal_info = array(
 				'client_id' => $data['client_id'],
 				'secret' => $data['secret'],
-				'environment' => $data['environment']
+				'environment' => $data['environment'],
+				'partner_attribution_id' => $data['setting']['partner'][$data['environment']]['partner_attribution_id']
 			);
 		
 			$paypal = new PayPal($paypal_info);
@@ -311,6 +360,23 @@ class ControllerExtensionPaymentPayPal extends Controller {
 
 		$this->response->setOutput($this->load->view('extension/payment/paypal', $data));
 	}
+	
+	public function disconnect() {
+		$this->load->model('setting/setting');
+		
+		$setting = $this->model_setting_setting->getSetting('payment_paypal');
+						
+		$setting['payment_paypal_client_id'] = '';
+		$setting['payment_paypal_secret'] = '';
+		$setting['payment_paypal_merchant_id'] = '';
+		$setting['payment_paypal_webhook_id'] = '';
+		
+		$this->model_setting_setting->editSetting('payment_paypal', $setting);
+		
+		$data['error'] = $this->error;
+		
+		$this->response->setOutput(json_encode($data));
+	}
 		
 	public function callback() {
 		if (isset($this->request->post['environment']) && isset($this->request->post['authorization_code']) && isset($this->request->post['shared_id']) && isset($this->request->post['seller_nonce'])) {
@@ -337,13 +403,20 @@ class ControllerExtensionPaymentPayPal extends Controller {
 		if (!$this->user->hasPermission('modify', 'extension/payment/paypal')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
+		
+		// Setting 		
+		$_config = new Config();
+		$_config->load('paypal');
+		
+		$setting = $_config->get('paypal_setting');
 				
 		require_once DIR_SYSTEM . 'library/paypal/paypal.php';
 		
 		$paypal_info = array(
 			'client_id' => $this->request->post['payment_paypal_client_id'],
 			'secret' => $this->request->post['payment_paypal_secret'],
-			'environment' => $this->request->post['payment_paypal_environment']
+			'environment' => $this->request->post['payment_paypal_environment'],
+			'partner_attribution_id' => $setting['partner'][$this->request->post['payment_paypal_environment']]['partner_attribution_id']
 		);
 		
 		$paypal = new PayPal($paypal_info);

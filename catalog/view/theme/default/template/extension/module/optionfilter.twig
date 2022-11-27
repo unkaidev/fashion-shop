@@ -1,0 +1,73 @@
+<div class="list-group optionfilter">
+  {% for optionfilter in optionfilters %}
+  {% if optionfilter.optionfilter_id == optionfilter_id %} 
+  <a href="javascript:void(0)" rel="{{ optionfilter.href }}" class="list-group-item active">{{ optionfilter.name }}</a> 
+  {% if optionfilter.children %}
+  {% for child in optionfilter.children %}
+  {% if child.option_value_id in filter_option_value_id %}
+  <label class="radio-inline">                       
+    <input type="checkbox" name="optionfilter" value="{{ child.option_value_id }}" checked="checked"> {{ child.name }}
+  </label><br/>
+  {% else %}
+  <label class="radio-inline">                       
+    <input type="checkbox" name="optionfilter" value="{{ child.option_value_id }}"> {{ child.name }}
+  </label><br/>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% else %} <a href="javascript:void(0)" rel="{{ optionfilter.href }}"class="list-group-item">{{ optionfilter.name }}</a>
+  {% endif %}
+  {% endfor %}
+</div>
+<script type="text/javascript">
+  $('.optionfilter input').on('click', function() {
+  var url = window.location.href;
+  var url2 = url.split('index.php')[1];
+  var url2 = url2.split('&')[0];
+  var url2 = 'index.php'+url2;
+
+  var url3 = '';
+  var url3 = url3+'index.php?route=product/category';
+  if (url2 ==url3) {
+    var url = url;
+  }else{
+    var url = 'index.php?route=product/search';
+  }
+
+
+ /* var filter_option_value_id = $('.optionfilter input:checked').val();
+  $('.optionfilter input:checked').each(function () {
+       var filter_option_value_id = (this.checked ? $(this).val() : "");
+  });*/
+  var filter_option_value_id =[];
+  $(".optionfilter input:checked").each(function(){
+    filter_option_value_id.push($(this).val());
+  });
+  if (filter_option_value_id=='') {
+    var filter_option_value_id =0;
+  }
+  var url = url.split( '&filter_option_value_id' )[0];
+  url += '&filter_option_value_id=' + encodeURIComponent(filter_option_value_id);
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  var url = url.replace("%2C", ",");
+  location = url;
+});
+</script>

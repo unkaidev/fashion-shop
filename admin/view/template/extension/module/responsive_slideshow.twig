@@ -1,0 +1,309 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-responsive-slideshow" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-responsive-slideshow" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if error_name %}
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner">{{ entry_banner }}</label>
+            <div class="col-sm-10">
+              <select name="banner_id" id="input-banner" class="form-control">
+                {% for banner in banners %}
+                {% if banner.banner_id == banner_id %}
+                <option value="{{ banner.banner_id }}" selected="selected">{{ banner.name }}</option>
+                {% else %}
+                <option value="{{ banner.banner_id }}">{{ banner.name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-width">{{ entry_width }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="width" value="{{ width }}" placeholder="{{ entry_width }}" id="input-width" class="form-control" />
+              {% if error_width %}
+              <div class="text-danger">{{ error_width }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-height">{{ entry_height }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="height" value="{{ height }}" placeholder="{{ entry_height }}" id="input-height" class="form-control" />
+              {% if error_height %}
+              <div class="text-danger">{{ error_height }}</div>
+              {% endif %}
+            </div>
+          </div>
+		  <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-effect">{{ entry_effect }}</label>
+            <div class="col-sm-10">
+              <select name="effect" id="input-effect" class="form-control">
+				<option value="">-- Please Select --</option>
+				<option value="shift"{% if effect == 'shift' %} selected="selected" {% endif %}>shift</option>
+				<option value="lines"{% if effect == 'lines' %} selected="selected" {% endif %}>lines</option>
+				<option value="turn"{% if effect == 'turn' %} selected="selected" {% endif %}>turn</option>
+				<option value="tv"{% if effect == 'tv' %} selected="selected" {% endif %}>tv</option>
+				<option value="bubbles"{% if effect == 'bubbles' %} selected="selected" {% endif %}>bubbles</option>
+				<option value="brick"{% if effect == 'brick' %} selected="selected" {% endif %}>brick</option>
+				<option value="dribbles"{% if effect == 'dribbles' %} selected="selected" {% endif %}>dribbles</option>
+				<option value="collage"{% if effect == 'collage' %} selected="selected" {% endif %}>collage</option>
+				<option value="louvers"{% if effect == 'louvers' %} selected="selected" {% endif %}>louvers</option>
+				<option value="seven"{% if effect == 'seven' %} selected="selected" {% endif %}>seven</option>
+				<option value="cube over"{% if effect == 'cube over' %} selected="selected" {% endif %}>cube over</option>
+				<option value="carousel"{% if effect == 'carousel' %} selected="selected" {% endif %}>carousel</option>
+				<option value="parallax"{% if effect == 'parallax' %} selected="selected" {% endif %}>parallax</option>
+				<option value="photo"{% if effect == 'photo' %} selected="selected" {% endif %}>photo</option>
+				<option value="kenburns"{% if effect == 'kenburns' %} selected="selected" {% endif %}>kenburns</option>
+				<option value="rotate"{% if effect == 'rotate' %} selected="selected" {% endif %}>rotate</option>
+				<option value="blinds"{% if effect == 'blinds' %} selected="selected" {% endif %}>blinds</option>
+				<option value="cube"{% if effect == 'cube' %} selected="selected" {% endif %}>cube</option>
+				<option value="domino"{% if effect == 'domino' %} selected="selected" {% endif %}>domino</option>
+				<option value="basic"{% if effect == 'basic' %} selected="selected" {% endif %}>basic</option>
+				<option value="blur"{% if effect == 'blur' %} selected="selected" {% endif %}>blur</option>
+				<option value="slices"{% if effect == 'slices' %} selected="selected" {% endif %}>slices</option>
+				<option value="basic linear"{% if effect == 'basic linear' %} selected="selected" {% endif %}>basic linear</option>
+				<option value="book"{% if effect == 'book' %} selected="selected" {% endif %}>book</option>
+				<option value="blast"{% if effect == 'blast' %} selected="selected" {% endif %}>blast</option>
+				<option value="fade"{% if effect == 'fade' %} selected="selected" {% endif %}>fade</option>
+				<option value="fly"{% if effect == 'fly' %} selected="selected" {% endif %}>fly</option>
+				<option value="stack"{% if effect == 'stack' %} selected="selected" {% endif %}>stack</option>
+				<option value="flip"{% if effect == 'flip' %} selected="selected" {% endif %}>flip</option>
+				<option value="stack vertical"{% if effect == 'stack vertical' %} selected="selected" {% endif %}>stack vertical</option>
+				<option value="squares"{% if effect == 'squares' %} selected="selected" {% endif %}>squares</option>
+              </select>
+				{% if error_effect %}
+					<div class="text-danger">{{ error_effect }}</div>
+				{% endif %}
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-duration">{{ entry_duration }}</label>
+            <div class="col-sm-5">
+              <input type="text" name="duration" value="{{ duration }}" placeholder="{{ entry_duration }}" id="input-duration" class="form-control" />
+            </div>
+			<div class="col-sm-5">
+              <input type="text" name="duration1" value="{{ duration1 }}" placeholder="{{ entry_duration }}" id="input-duration1" class="form-control" />
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-delay">{{ entry_delay }}</label>
+            <div class="col-sm-5">
+              <input type="text" name="delay" value="{{ delay }}" placeholder="{{ entry_delay }}" id="input-delay" class="form-control" />
+            </div>
+			<div class="col-sm-5">
+              <input type="text" name="delay1" value="{{ delay1 }}" placeholder="{{ entry_delay }}" id="input-delay1" class="form-control" />
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_autoplay }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if autoplay %}
+                      <input type="radio" name="autoplay" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="autoplay" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not autoplay %}
+                      <input type="radio" name="autoplay" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="autoplay" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_playpause }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if playpause %}
+                      <input type="radio" name="playpause" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="playpause" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not playpause %}
+                      <input type="radio" name="playpause" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="playpause" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_stoponhover }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if stoponhover %}
+                      <input type="radio" name="stoponhover" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="stoponhover" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not stoponhover %}
+                      <input type="radio" name="stoponhover" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="stoponhover" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_loop }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if loop %}
+                      <input type="radio" name="loop" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="loop" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not loop %}
+                      <input type="radio" name="loop" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="loop" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_caption }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if caption %}
+                      <input type="radio" name="caption" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="caption" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not caption %}
+                      <input type="radio" name="caption" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="caption" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_controls }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if controls %}
+                      <input type="radio" name="controls" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="controls" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not controls %}
+                      <input type="radio" name="controls" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="controls" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_controlsthumb }}</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if controlsthumb %}
+                      <input type="radio" name="controlsthumb" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="controlsthumb" value="1" />
+                      {{ text_yes }}
+                      {% endif %}
+                    </label>
+                    <label class="radio-inline">
+                      {% if not controlsthumb %}
+                      <input type="radio" name="controlsthumb" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="controlsthumb" value="0" />
+                      {{ text_no }}
+                      {% endif %}
+                    </label>
+                  </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
